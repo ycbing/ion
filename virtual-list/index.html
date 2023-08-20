@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Virtual List Example</title>
+    <style>
+      .list-container {
+        height: 300px;
+        overflow: hidden;
+      }
+      .list-item {
+        height: 50px;
+        border-bottom: 1px solid #ccc;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="listContainer" class="list-container">
+      <div id="listViewport"></div>
+    </div>
+    <script>
+      const listContainer = document.getElementById("listContainer");
+      const listViewport = document.getElementById("listViewport");
+      const totalItems = 1000;
+      const itemHeight = 50;
+      const chunkSize = Math.floor(listContainer.clientHeight / itemHeight);
+      const totalChunks = Math.ceil(totalItems / chunkSize);
+
+      function renderChunk(chunkIndex) {
+        const startIndex = chunkIndex * chunkSize;
+        const endIndex = Math.min(startIndex + chunkSize, totalItems);
+        const chunk = document.createElement("div");
+        for (let i = startIndex; i < endIndex; i++) {
+          const item = document.createElement("div");
+          item.className = "list-item";
+          item.innerText = `Item ${i}`;
+          chunk.appendChild(item);
+        }
+        chunk.style.height = `${(endIndex - startIndex) * itemHeight}px`;
+        listViewport.appendChild(chunk);
+      }
+
+      function updateList() {
+        const scrollTop = listContainer.scrollTop;
+        const currentChunk = Math.floor(scrollTop / (chunkSize * itemHeight));
+        listViewport.innerHTML = "";
+        for (let i = currentChunk - 1; i <= currentChunk + 1; i++) {
+          if (i >= 0 && i < totalChunks) {
+            renderChunk(i);
+          }
+        }
+      }
+
+      listContainer.addEventListener("scroll", updateList);
+      updateList();
+    </script>
+  </body>
+</html>
