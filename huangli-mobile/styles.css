@@ -1,0 +1,21 @@
+:root {
+  --theme: #e74c3c;
+  --theme-light: #fdecea;
+}
+
+html, body { height: 100%; }
+* { -webkit-tap-highlight-color: rgba(0,0,0,0); }
+
+.container { max-width: 480px; margin: 0 auto; }
+
+/* 单独抽离，非关键路径样式 */
+.footer-space { height: env(safe-area-inset-bottom); }
+
+/* 交互态 */
+button { background: transparent; border: 0; padding: 0; }
+button:focus { outline: none; }
+
+/* 适配 */
+@media (min-width: 560px) {
+  .cell { height: 64px; }
+}
