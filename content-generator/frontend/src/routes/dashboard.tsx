@@ -12,7 +12,6 @@ import {
   StatHelpText,
   StatLabel,
   StatNumber,
-  Tag,
   Text,
 } from "@chakra-ui/react";
 import { Fragment } from "react";
@@ -23,7 +22,8 @@ import {
 } from "@/components/form";
 import { AppIcon } from "@/components/icons";
 import { PageShell, SectionCard } from "@/components/layout";
-import { useProviders } from "@/features/providers";
+import { CopyWorkflow } from "@/features/copy-workflow";
+import { providerOverviewFallback, useProviderOverview } from "@/features/providers";
 
 const primaryChannelOptions = [
   { label: "Xiaohongshu", value: "xiaohongshu" },
@@ -67,7 +67,20 @@ const inspirationSnippets = [
 ];
 
 export const DashboardPage = () => {
-  const { data: providers, isFetching } = useProviders();
+  const { data: providerOverviewData, isFetching } = useProviderOverview();
+  const providerOverview = providerOverviewData ?? providerOverviewFallback;
+  const providerDomains = [
+    {
+      key: "text" as const,
+      title: "Text generation",
+      summary: providerOverview.text,
+    },
+    {
+      key: "image" as const,
+      title: "Image generation",
+      summary: providerOverview.image,
+    },
+  ];
 
   return (
     <PageShell
@@ -84,6 +97,14 @@ export const DashboardPage = () => {
         </Fragment>
       }
     >
+      <SectionCard
+        title="Copy-to-image studio"
+        description="Brief a topic, pick your favourite AI copy, then render hero visuals in one flow."
+        icon="wand"
+      >
+        <CopyWorkflow />
+      </SectionCard>
+
       <SimpleGrid columns={{ base: 1, lg: 2 }} spacing={{ base: 6, lg: 8 }}>
         <SectionCard
           title="Launch narrative"
@@ -120,36 +141,62 @@ export const DashboardPage = () => {
           icon="dashboard"
         >
           <Stack spacing={4}>
-            {providers.map((provider) => (
-              <Box
-                key={provider.name}
-                borderRadius="xl"
-                border="1px solid"
-                borderColor="ink.100"
-                px={4}
-                py={3}
-                bg="highlight"
-              >
-                <Stack spacing={2}>
-                  <HStack justify="space-between" align="center">
-                    <Text fontWeight="semibold">{provider.label}</Text>
+            {providerDomains.map(({ key, title, summary }) => {
+              const activeLabel =
+                summary.providers.find((provider) => provider.name === summary.active)?.label ??
+                summary.active;
+
+              return (
+                <Stack
+                  key={key}
+                  spacing={3}
+                  borderRadius="xl"
+                  border="1px solid"
+                  borderColor="ink.100"
+                  p={4}
+                >
+                  <HStack justify="space-between" align="flex-start">
+                    <Stack spacing={1}>
+                      <Text fontWeight="semibold">{title}</Text>
+                      <Text fontSize="sm" color="subtle">
+                        Active: {activeLabel}
+                      </Text>
+                    </Stack>
                     <Badge colorScheme="brand" variant="subtle">
-                      Live
+                      {summary.providers.length} option{summary.providers.length === 1 ? "" : "s"}
                     </Badge>
                   </HStack>
-                  <Text fontSize="sm" color="subtle">
-                    {provider.baseUrl}
-                  </Text>
-                  <HStack spacing={2} flexWrap="wrap">
-                    {provider.models.map((model) => (
-                      <Tag key={model} size="sm" colorScheme="brand" variant="subtle">
-                        {model}
-                      </Tag>
+                  <Stack spacing={3}>
+                    {summary.providers.map((provider) => (
+                      <HStack key={provider.name} justify="space-between" align="flex-start">
+                        <Stack spacing={0} flex="1">
+                          <Text fontWeight="medium">{provider.label}</Text>
+                          <Text fontSize="sm" color="subtle">
+                            Driver: {provider.driver}
+                          </Text>
+                        </Stack>
+                        <Badge
+                          variant={provider.isActive ? "solid" : "subtle"}
+                          colorScheme={
+                            provider.isActive
+                              ? "brand"
+                              : provider.missingCredentials.length > 0
+                              ? "red"
+                              : "green"
+                          }
+                        >
+                          {provider.isActive
+                            ? "Active"
+                            : provider.missingCredentials.length > 0
+                            ? "Credentials"
+                            : "Ready"}
+                        </Badge>
+                      </HStack>
                     ))}
-                  </HStack>
+                  </Stack>
                 </Stack>
-              </Box>
-            ))}
+              );
+            })}
             {isFetching ? <Skeleton h="20px" borderRadius="md" /> : null}
           </Stack>
         </SectionCard>

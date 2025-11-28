@@ -3,6 +3,7 @@ import {
   BellRing,
   CalendarClock,
   Clock3,
+  Download,
   Feather,
   Flame,
   LayoutDashboard,
@@ -12,6 +13,7 @@ import {
   Palette,
   Plus,
   Settings2,
+  Share2,
   ShieldCheck,
   Sparkles,
   TrendingUp,
@@ -35,6 +37,8 @@ const iconRegistry = {
   feather: Feather,
   shield: ShieldCheck,
   bell: BellRing,
+  download: Download,
+  share: Share2,
 } as const;
 
 export type AppIconName = keyof typeof iconRegistry;
