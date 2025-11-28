@@ -84,7 +84,7 @@ All configurable values live in `.env` at the repository root (see `.env.example
 | -------- | ----------- |
 | `CONTENT_BACKEND_PORT` | Port the Express API listens on (default `4000`). |
 | `CONTENT_FRONTEND_URL` | Base URL the frontend uses to talk to the API (default `http://localhost:5173`). |
-| `VITE_API_URL` | Frontend environment variable that points to the backend API (default `http://localhost:4000`). |
+| `VITE_API_BASE_URL` | Frontend environment variable that points to the backend API (default `http://localhost:4000`). |
 | `AI_PROVIDERS` | Comma-separated list of enabled providers (`openai,anthropic`). |
 | `OPENAI_API_KEY`, `ANTHROPIC_API_KEY` | Secrets used when calling respective providers. |
 | `OPENAI_API_BASE`, `ANTHROPIC_API_BASE` | Override default base URLs when pointing at self-hosted gateways. |
@@ -102,7 +102,7 @@ To add a new provider:
 
 ## Frontend
 
-The frontend is a Vite + React + TypeScript shell that will eventually consume the backend API. It currently renders placeholder UI and expects the backend to be reachable at `CONTENT_FRONTEND_URL`.
+The frontend is a Vite + React + TypeScript application styled with Chakra UI and a custom Xiaohongshu-inspired theme. Routing is handled by React Router and data fetching/state management by React Query with an Axios client that reads its base URL from `VITE_API_BASE_URL`. Shared layout primitives (`PageShell`, `SectionCard`) and form elements provide a consistent design language across screens.
 
 Common scripts:
 
