@@ -1,14 +1,21 @@
 import { createApp } from "./app";
 import { settings } from "./config";
 import { createAiProviderRouter } from "./providers/ai-provider-router";
-import { providerRegistry } from "./providers";
+import { createProviderRegistry } from "./providers";
 
-const app = createApp({ aiRouter: createAiProviderRouter() });
+const providerRegistry = createProviderRegistry();
+const aiRouter = createAiProviderRouter(providerRegistry);
+
+const app = createApp({ aiRouter, providerRegistry });
 
 const server = app.listen(settings.server.port, settings.server.host, () => {
-  const providerNames = providerRegistry.all().map((provider) => provider.name);
+  const overview = providerRegistry.listProviders();
+  const textProviders = overview.text.providers.map((provider) => provider.name).join(", ");
+  const imageProviders = overview.image.providers.map((provider) => provider.name).join(", ");
+
   console.log(
-    `Backend ready on ${settings.server.host}:${settings.server.port} (env: ${settings.env}). Providers: ${providerNames.join(", ")}`
+    `Backend ready on ${settings.server.host}:${settings.server.port} (env: ${settings.env}). ` +
+      `Text providers: ${textProviders}. Image providers: ${imageProviders}.`
   );
 });
 

@@ -1,0 +1,56 @@
+{
+  "text": {
+    "active": "mock",
+    "providers": {
+      "openai": {
+        "driver": "openai",
+        "label": "OpenAI GPT-4.1 Mini",
+        "promptTemplates": {
+          "default": "Write a concise marketing message about {{topic}}. Highlight the key benefits and keep the tone {{tone}}."
+        },
+        "credentials": {
+          "apiKey": "OPENAI_API_KEY"
+        },
+        "options": {
+          "model": "gpt-4.1-mini",
+          "maxTokens": 600
+        }
+      },
+      "mock": {
+        "driver": "mock",
+        "label": "Local Mock Text Provider",
+        "promptTemplates": {
+          "default": "Draft {{variants}} friendly marketing blurb(s) for {{topic}}."
+        },
+        "options": {
+          "maxTokens": 256
+        }
+      }
+    }
+  },
+  "image": {
+    "active": "mock",
+    "providers": {
+      "stability": {
+        "driver": "stability",
+        "label": "Stability AI (Stable Diffusion XL)",
+        "promptTemplates": {
+          "default": "Create an illustrative image for the copy: {{copy}}"
+        },
+        "credentials": {
+          "apiKey": "STABILITY_API_KEY"
+        },
+        "options": {
+          "engine": "stable-diffusion-xl-1024-v1-0"
+        }
+      },
+      "mock": {
+        "driver": "mock",
+        "label": "Local Mock Image Provider",
+        "promptTemplates": {
+          "default": "Generate a placeholder visual inspired by: {{copy}}"
+        }
+      }
+    }
+  }
+}
