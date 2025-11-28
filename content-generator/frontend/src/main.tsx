@@ -1,9 +1,23 @@
+import "@fontsource/plus-jakarta-sans/variable-full.css";
 import React from "react";
-import ReactDOM from "react-dom/client";
-import App from "./App";
+import { createRoot } from "react-dom/client";
+import { BrowserRouter } from "react-router-dom";
 
-ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
+import App from "@/App";
+import { AppProvider } from "@/providers/app-provider";
+
+const rootElement = document.getElementById("root");
+
+if (!rootElement) {
+  throw new Error("Root element not found");
+}
+
+createRoot(rootElement).render(
   <React.StrictMode>
-    <App />
-  </React.StrictMode>
+    <AppProvider>
+      <BrowserRouter>
+        <App />
+      </BrowserRouter>
+    </AppProvider>
+  </React.StrictMode>,
 );
