@@ -41,6 +41,20 @@ Alternatively, run both concurrently from the root:
 npm run dev
 ```
 
+## Manual QA: Copy-to-image workflow
+
+The dashboard now exposes an end-to-end “copy-to-image” studio powered by the backend API. To exercise the flow manually:
+
+1. Follow the steps above (or run `npm run dev` from the repo root) so that both the Express API (default `http://localhost:4000`) and the Vite frontend (default `http://localhost:5173`) are running.
+2. Visit `http://localhost:5173` in your browser and land on the Dashboard.
+3. Inside the **Copy-to-image studio** card:
+   - Enter a topic, optional creative direction, tone, audience, and keywords.
+   - Click **Generate copy ideas** to call `POST /api/copies` and receive AI-written variants.
+   - Edit or select the variant you prefer.
+4. Adjust the visual style inputs (palette, medium, mood, aspect ratio) and click **Generate image**. This triggers `POST /api/images` and streams the resulting asset into the gallery.
+5. Use the **Manage providers** button to open the settings drawer, switch the active text or image provider, and re-run the steps above to confirm the updated vendor is used.
+6. Use the gallery actions to download the generated image or copy/share the asset URL.
+
 ## Workspace Layout
 
 ```
@@ -110,6 +124,7 @@ Common scripts:
 npm run dev --workspace content-generator/frontend
 npm run build --workspace content-generator/frontend
 npm run lint --workspace content-generator/frontend
+npm run test --workspace content-generator/frontend
 ```
 
 ## Backend
