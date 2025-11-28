@@ -1,31 +1,32 @@
-import cors from "cors";
-import express from "express";
-import { env } from "./env";
+import { createApp } from "./app";
+import { settings } from "./config";
+import { createAiProviderRouter } from "./providers/ai-provider-router";
 import { providerRegistry } from "./providers";
 
-const app = express();
+const app = createApp({ aiRouter: createAiProviderRouter() });
 
-app.use(cors({ origin: env.frontendUrl }));
-app.use(express.json());
-
-app.get("/health", (_req, res) => {
-  res.json({
-    status: "ok",
-    environment: env.nodeEnv,
-    providers: providerRegistry
-      .all()
-      .map((provider) => ({ name: provider.name, label: provider.label })),
-  });
-});
-
-app.get("/providers", (_req, res) => {
-  res.json({ providers: providerRegistry.all() });
-});
-
-app.listen(env.backendPort, () => {
+const server = app.listen(settings.server.port, settings.server.host, () => {
+  const providerNames = providerRegistry.all().map((provider) => provider.name);
   console.log(
-    `Backend ready on port ${env.backendPort} (mode: ${env.nodeEnv}). Serving ${providerRegistry
-      .all()
-      .length} providers.`
+    `Backend ready on ${settings.server.host}:${settings.server.port} (env: ${settings.env}). Providers: ${providerNames.join(", ")}`
   );
+});
+
+const shutdown = (signal: NodeJS.Signals) => {
+  console.log(`Received ${signal}, shutting down`);
+  server.close(() => {
+    process.exit(0);
+  });
+};
+
+process.on("SIGINT", () => shutdown("SIGINT"));
+process.on("SIGTERM", () => shutdown("SIGTERM"));
+
+process.on("unhandledRejection", (error) => {
+  console.error("[UnhandledRejection]", error);
+});
+
+process.on("uncaughtException", (error) => {
+  console.error("[UncaughtException]", error);
+  shutdown("SIGTERM");
 });
