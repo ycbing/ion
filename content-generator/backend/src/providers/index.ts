@@ -1,4 +1,4 @@
-import { env } from "../env";
+import { settings } from "../config";
 import { anthropicConfig } from "./configs/anthropic";
 import { openAiConfig } from "./configs/openai";
 import { ProviderConfig } from "./types";
@@ -6,7 +6,11 @@ import { ProviderConfig } from "./types";
 const allProviders: ProviderConfig[] = [openAiConfig, anthropicConfig];
 
 const enabledProviders = allProviders.filter((provider) =>
-  env.providerNames.includes(provider.name)
+  settings.providers.enabled.includes(provider.name)
+);
+
+const defaultProvider = enabledProviders.find(
+  (provider) => provider.name === settings.providers.default
 );
 
 export const providerRegistry = {
@@ -14,6 +18,10 @@ export const providerRegistry = {
     return enabledProviders;
   },
   find(name: string): ProviderConfig | undefined {
-    return enabledProviders.find((provider) => provider.name === name);
+    const normalized = name.trim().toLowerCase();
+    return enabledProviders.find((provider) => provider.name === normalized);
   },
+  default(): ProviderConfig | undefined {
+    return defaultProvider;
+  }
 };
