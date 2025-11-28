@@ -4,21 +4,5 @@
     "cors": {
       "origin": "CONTENT_FRONTEND_URL"
     }
-  },
-  "providers": {
-    "enabled": "AI_PROVIDERS",
-    "default": "AI_DEFAULT_PROVIDER"
-  },
-  "ai": {
-    "openai": {
-      "apiKey": "OPENAI_API_KEY",
-      "baseUrl": "OPENAI_API_BASE",
-      "model": "OPENAI_MODEL"
-    },
-    "anthropic": {
-      "apiKey": "ANTHROPIC_API_KEY",
-      "baseUrl": "ANTHROPIC_API_BASE",
-      "model": "ANTHROPIC_MODEL"
-    }
   }
 }

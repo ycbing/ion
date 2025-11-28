@@ -2,8 +2,8 @@ import type {
   AiProviderRouter,
   GeneratedImage
 } from "../providers/ai-provider-router";
+import type { ProviderRegistry } from "../providers/provider-registry";
 import type { GenerateImageInput } from "../schemas/image-schema";
-import { ProviderSelector } from "./provider-selector";
 
 export interface GenerateImageResponse {
   provider: string;
@@ -17,13 +17,13 @@ export interface GenerateImageResponse {
 export class ImageService {
   constructor(
     private readonly router: AiProviderRouter,
-    private readonly providerSelector: ProviderSelector
+    private readonly registry: ProviderRegistry
   ) {}
 
   async generateImage(
     payload: GenerateImageInput
   ): Promise<GenerateImageResponse> {
-    const provider = this.providerSelector.resolve(payload.provider);
+    const provider = this.registry.resolveImageProviderName(payload.provider);
 
     const result = await this.router.generateImage({
       provider,

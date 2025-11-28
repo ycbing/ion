@@ -1,6 +1,6 @@
 import type { AiProviderRouter } from "../providers/ai-provider-router";
+import type { ProviderRegistry } from "../providers/provider-registry";
 import type { GenerateCopyInput } from "../schemas/copy-schema";
-import { ProviderSelector } from "./provider-selector";
 
 export interface GenerateCopyResponse {
   provider: string;
@@ -19,11 +19,11 @@ export interface GenerateCopyResponse {
 export class CopyService {
   constructor(
     private readonly router: AiProviderRouter,
-    private readonly providerSelector: ProviderSelector
+    private readonly registry: ProviderRegistry
   ) {}
 
   async generateCopy(payload: GenerateCopyInput): Promise<GenerateCopyResponse> {
-    const provider = this.providerSelector.resolve(payload.provider);
+    const provider = this.registry.resolveTextProviderName(payload.provider);
     const requestedVariants = payload.options?.variants ?? 1;
 
     const result = await this.router.generateCopy({

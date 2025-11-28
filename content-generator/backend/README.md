@@ -14,15 +14,13 @@ The server listens on `settings.server.port` (default `4000`) and exposes a simp
 
 ### `POST /api/copies`
 
-Create marketing copy variants for a given topic and optional prompt/options payload.
+Create marketing copy variants for a given topic and optional prompt/options payload. The active text provider is resolved by the provider registry; include the `provider` field to override it per request.
 
 **Request body**
 
 ```json
 {
   "topic": "Product launch announcement",
-  "prompt": "Highlight the sustainability story",
-  "provider": "openai",
   "options": {
     "tone": "friendly",
     "audience": "existing customers",
@@ -39,10 +37,10 @@ Create marketing copy variants for a given topic and optional prompt/options pay
 {
   "success": true,
   "data": {
-    "provider": "openai",
+    "provider": "mock",
     "copies": [
       {
-        "id": "openai-copy-1",
+        "id": "mock-copy-1",
         "text": "..."
       }
     ],
@@ -57,7 +55,7 @@ Create marketing copy variants for a given topic and optional prompt/options pay
 
 ### `POST /api/images`
 
-Produce an illustrative asset for a selected copy block plus optional style controls.
+Produce an illustrative asset for a selected copy block plus optional style controls. As with text generation, the provider defaults to the active image vendor but can be overridden with a `provider` field.
 
 **Request body**
 
@@ -78,9 +76,9 @@ Produce an illustrative asset for a selected copy block plus optional style cont
 {
   "success": true,
   "data": {
-    "provider": "openai",
+    "provider": "mock",
     "image": {
-      "url": "https://images.example.com/openai/placeholder.png",
+      "url": "https://images.example.com/mock/mock.png",
       "altText": "AI generated visual for: Say hello to our ecofriendly packaging"
     },
     "metadata": {
@@ -90,6 +88,85 @@ Produce an illustrative asset for a selected copy block plus optional style cont
         "palette": ["#0099cc", "#c0f5f7"],
         "aspectRatio": "16:9"
       }
+    }
+  }
+}
+```
+
+### `GET /api/providers`
+
+Return the full provider registry, including the active provider for each domain, prompt templates, and credential status.
+
+**Success response (abridged)**
+
+```json
+{
+  "success": true,
+  "data": {
+    "text": {
+      "active": "mock",
+      "providers": [
+        {
+          "name": "openai",
+          "label": "OpenAI GPT-4.1 Mini",
+          "missingCredentials": ["apiKey"],
+          "isActive": false
+        },
+        {
+          "name": "mock",
+          "label": "Local Mock Text Provider",
+          "missingCredentials": [],
+          "isActive": true
+        }
+      ]
+    },
+    "image": {
+      "active": "mock",
+      "providers": [
+        {
+          "name": "stability",
+          "label": "Stability AI (Stable Diffusion XL)",
+          "missingCredentials": ["apiKey"],
+          "isActive": false
+        }
+      ]
+    }
+  }
+}
+```
+
+### `PATCH /api/providers/active`
+
+Switch the active provider for one or both domains without redeploying the backend. Credentials must be present for the requested provider or the request will fail with `PROVIDER_CREDENTIALS_MISSING`.
+
+**Request body**
+
+```json
+{
+  "text": "openai",
+  "image": "stability"
+}
+```
+
+**Success response**
+
+```json
+{
+  "success": true,
+  "data": {
+    "text": {
+      "active": "openai",
+      "providers": [
+        { "name": "openai", "isActive": true },
+        { "name": "mock", "isActive": false }
+      ]
+    },
+    "image": {
+      "active": "stability",
+      "providers": [
+        { "name": "stability", "isActive": true },
+        { "name": "mock", "isActive": false }
+      ]
     }
   }
 }
@@ -107,6 +184,28 @@ Every JSON payload is validated by Zod. Validation failures or provider resoluti
   }
 }
 ```
+
+## Provider configuration
+
+The provider registry is defined in `config/providers.json`. It contains separate sections for text and image domains. Each provider entry includes:
+
+- `driver`: the implementation to instantiate (built-in drivers: `openai`, `stability`, `mock`).
+- `label`: the human-friendly name returned to clients.
+- `promptTemplates`: optional tokenized templates used by the provider to build prompts (e.g. `{{topic}}`, `{{tone}}`).
+- `credentials`: a map from credential aliases to environment variable names. The registry reads these values from `process.env` and tracks whether they are present.
+- `options` / `metadata`: arbitrary configuration forwarded to the provider implementation.
+
+To add or customise a provider:
+
+1. Add (or update) an entry under `text.providers` or `image.providers` in `config/providers.json` with a unique name and driver.
+2. Declare any required credentials by referencing environment variables (e.g. `"apiKey": "MY_PROVIDER_API_KEY"`).
+3. If the driver is new, implement a class under `src/providers/vendors` that conforms to the `TextProvider` or `ImageProvider` interface and register it in `TEXT_PROVIDER_FACTORIES` or `IMAGE_PROVIDER_FACTORIES` inside `src/providers/provider-registry.ts`.
+4. Restart the server so the registry reloads the configuration.
+
+Sample environment variables are documented in `.env.example`. The built-in providers expect:
+
+- `OPENAI_API_KEY` for the OpenAI text driver.
+- `STABILITY_API_KEY` for the Stability image driver.
 
 ## Testing
 
