@@ -1,14 +1,14 @@
-import { ReactNode } from "react";
 import { ChakraProvider, ColorModeScript } from "@chakra-ui/react";
 import { QueryClientProvider } from "@tanstack/react-query";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
+import { ReactNode } from "react";
 
 import { queryClient } from "@/lib/query-client";
 import { theme } from "@/theme";
 
-interface AppProviderProps {
+type AppProviderProps = {
   children: ReactNode;
-}
+};
 
 export const AppProvider = ({ children }: AppProviderProps) => (
   <ChakraProvider theme={theme}>

@@ -9,12 +9,12 @@ import {
 } from "@chakra-ui/react";
 import { forwardRef, useId } from "react";
 
-interface FormTextFieldProps extends InputProps {
+type FormTextFieldProps = InputProps & {
   label: string;
   helperText?: string;
   error?: string;
   optional?: boolean;
-}
+};
 
 export const FormTextField = forwardRef<HTMLInputElement, FormTextFieldProps>(
   ({ label, helperText, error, optional, id, ...rest }, ref) => {

@@ -1,4 +1,3 @@
-import { useMemo, useState } from "react";
 import {
   Box,
   Button,
@@ -16,6 +15,7 @@ import {
   Stack,
   Textarea,
 } from "@chakra-ui/react";
+import { useMemo, useState } from "react";
 
 import type { CopyGenerationOptions, GenerateCopyPayload } from "../types";
 
@@ -82,10 +82,10 @@ const buildOptionsPayload = (
   return Object.keys(payload).length > 0 ? payload : undefined;
 };
 
-interface TopicInputProps {
+type TopicInputProps = {
   isLoading?: boolean;
   onSubmit: (payload: GenerateCopyPayload) => void;
-}
+};
 
 export const TopicInput = ({ isLoading = false, onSubmit }: TopicInputProps) => {
   const [topic, setTopic] = useState("");

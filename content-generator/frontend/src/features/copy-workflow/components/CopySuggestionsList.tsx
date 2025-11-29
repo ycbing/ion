@@ -16,7 +16,7 @@ import {
 
 import type { CopyGenerationMetadata, CopySuggestion } from "../types";
 
-interface CopySuggestionsListProps {
+type CopySuggestionsListProps = {
   copies: CopySuggestion[];
   metadata?: CopyGenerationMetadata;
   providerName?: string;
@@ -27,7 +27,7 @@ interface CopySuggestionsListProps {
   error?: string | null;
   onRetry?: () => void;
   hasRequested?: boolean;
-}
+};
 
 const LoadingState = () => (
   <Stack spacing={3}>

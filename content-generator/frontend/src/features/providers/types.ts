@@ -1,12 +1,12 @@
 export type ProviderDomain = "text" | "image";
 
-export interface CredentialStatus {
+export type CredentialStatus = {
   envVar: string;
   optional: boolean;
   present: boolean;
-}
+};
 
-export interface ProviderSummary {
+export type ProviderSummary = {
   name: string;
   driver: string;
   label: string;
@@ -16,19 +16,19 @@ export interface ProviderSummary {
   credentials: Record<string, CredentialStatus>;
   missingCredentials: string[];
   isActive: boolean;
-}
+};
 
-export interface ProviderDomainSummary {
+export type ProviderDomainSummary = {
   active: string;
   providers: ProviderSummary[];
-}
+};
 
-export interface ProviderOverview {
+export type ProviderOverview = {
   text: ProviderDomainSummary;
   image: ProviderDomainSummary;
-}
+};
 
-export interface UpdateActiveProvidersPayload {
+export type UpdateActiveProvidersPayload = {
   text?: string;
   image?: string;
-}
+};

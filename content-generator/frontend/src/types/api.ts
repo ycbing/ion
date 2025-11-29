@@ -1,18 +1,18 @@
-export interface ApiSuccessEnvelope<T> {
+export type ApiSuccessEnvelope<T> = {
   success: true;
   data: T;
   metadata?: Record<string, unknown>;
-}
+};
 
-export interface ApiErrorDetails {
+export type ApiErrorDetails = {
   message: string;
   code?: string;
   details?: unknown;
-}
+};
 
-export interface ApiErrorEnvelope {
+export type ApiErrorEnvelope = {
   success: false;
   error: ApiErrorDetails;
-}
+};
 
 export type ApiEnvelope<T> = ApiSuccessEnvelope<T> | ApiErrorEnvelope;

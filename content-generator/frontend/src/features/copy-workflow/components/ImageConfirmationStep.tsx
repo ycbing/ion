@@ -1,4 +1,3 @@
-import { useState } from "react";
 import {
   Alert,
   AlertDescription,
@@ -15,6 +14,7 @@ import {
   Text,
   Textarea,
 } from "@chakra-ui/react";
+import { useState } from "react";
 
 import type { CopySuggestion, ImageStyleOptions } from "../types";
 
@@ -33,14 +33,14 @@ const parsePalette = (value: string): string[] | undefined => {
   return entries.length > 0 ? entries : undefined;
 };
 
-interface ImageConfirmationStepProps {
+type ImageConfirmationStepProps = {
   selectedCopy: CopySuggestion | null;
   onGenerate: (style: ImageStyleOptions) => void;
   providerName?: string;
   isDisabled?: boolean;
   isLoading?: boolean;
   error?: string | null;
-}
+};
 
 export const ImageConfirmationStep = ({
   selectedCopy,

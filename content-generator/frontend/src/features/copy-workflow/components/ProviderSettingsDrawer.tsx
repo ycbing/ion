@@ -1,4 +1,3 @@
-import { useEffect, useMemo, useState } from "react";
 import {
   Badge,
   Button,
@@ -14,16 +13,22 @@ import {
   Stack,
   Text,
 } from "@chakra-ui/react";
+import { useEffect, useMemo, useState } from "react";
 
-import type { ProviderDomain, ProviderOverview, ProviderSummary, UpdateActiveProvidersPayload } from "@/features/providers";
+import type {
+  ProviderDomain,
+  ProviderOverview,
+  ProviderSummary,
+  UpdateActiveProvidersPayload,
+} from "@/features/providers";
 
-interface ProviderSettingsDrawerProps {
+type ProviderSettingsDrawerProps = {
   isOpen: boolean;
   onClose: () => void;
   overview: ProviderOverview;
   isSubmitting: boolean;
   onSave: (payload: UpdateActiveProvidersPayload) => Promise<void> | void;
-}
+};
 
 const domainLabels: Record<ProviderDomain, string> = {
   text: "Text generation",
@@ -115,13 +120,16 @@ export const ProviderSettingsDrawer = ({
             {domainOrder.map((domain) => {
               const summary = overview[domain];
               const activeSelection = domain === "text" ? textSelection : imageSelection;
+              const activeLabel =
+                summary.providers.find((provider) => provider.name === summary.active)?.label ??
+                summary.active;
 
               return (
                 <Stack key={domain} spacing={4}>
                   <Stack spacing={1}>
                     <Text fontWeight="semibold">{domainLabels[domain]}</Text>
                     <Text fontSize="sm" color="subtle">
-                      Active: {summary.providers.find((provider) => provider.name === summary.active)?.label ?? summary.active}
+                      Active: {activeLabel}
                     </Text>
                   </Stack>
                   <RadioGroup
@@ -147,9 +155,7 @@ export const ProviderSettingsDrawer = ({
                           <Stack spacing={1} fontSize="sm" color="subtle">
                             <Text>Driver: {provider.driver}</Text>
                             {provider.missingCredentials.length > 0 ? (
-                              <Text>
-                                Missing: {provider.missingCredentials.map((credential) => credential).join(", ")}
-                              </Text>
+                              <Text>Missing: {provider.missingCredentials.join(", ")}</Text>
                             ) : null}
                           </Stack>
                         </Stack>

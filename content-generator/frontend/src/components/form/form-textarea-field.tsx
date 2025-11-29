@@ -9,12 +9,12 @@ import {
 } from "@chakra-ui/react";
 import { forwardRef, useId } from "react";
 
-interface FormTextareaFieldProps extends TextareaProps {
+type FormTextareaFieldProps = TextareaProps & {
   label: string;
   helperText?: string;
   error?: string;
   optional?: boolean;
-}
+};
 
 export const FormTextareaField = forwardRef<HTMLTextAreaElement, FormTextareaFieldProps>(
   ({ label, helperText, error, optional, id, ...rest }, ref) => {
