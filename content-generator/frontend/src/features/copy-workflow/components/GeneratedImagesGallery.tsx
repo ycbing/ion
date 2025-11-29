@@ -13,9 +13,9 @@ import {
 import { AppIcon } from "@/components/icons";
 import type { WorkflowImageRecord } from "../types";
 
-interface GeneratedImagesGalleryProps {
+type GeneratedImagesGalleryProps = {
   images: WorkflowImageRecord[];
-}
+};
 
 const formatTimestamp = (value: string): string => {
   try {

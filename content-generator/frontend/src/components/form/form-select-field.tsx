@@ -9,18 +9,18 @@ import {
 } from "@chakra-ui/react";
 import { forwardRef, useId } from "react";
 
-interface Option {
+type FormSelectFieldOption = {
   label: string;
   value: string;
-}
+};
 
-interface FormSelectFieldProps extends SelectProps {
+type FormSelectFieldProps = SelectProps & {
   label: string;
-  options: Option[];
+  options: FormSelectFieldOption[];
   helperText?: string;
   error?: string;
   optional?: boolean;
-}
+};
 
 export const FormSelectField = forwardRef<HTMLSelectElement, FormSelectFieldProps>(
   ({ label, options, helperText, error, optional, id, placeholder, ...rest }, ref) => {

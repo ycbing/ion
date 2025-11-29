@@ -10,6 +10,7 @@ import {
   Text,
 } from "@chakra-ui/react";
 import { Fragment } from "react";
+
 import { AppIcon } from "@/components/icons";
 import { PageShell, SectionCard } from "@/components/layout";
 
@@ -20,7 +21,7 @@ const upcomingCampaigns = [
     launchDate: "Dec 08",
     status: "In production",
     progress: 72,
-    focus: "Streetfood-meets-skin"
+    focus: "Streetfood-meets-skin",
   },
   {
     id: "camp-2",
@@ -28,7 +29,7 @@ const upcomingCampaigns = [
     launchDate: "Dec 15",
     status: "Brief ready",
     progress: 45,
-    focus: "Warm capsule moments"
+    focus: "Warm capsule moments",
   },
   {
     id: "camp-3",
@@ -36,7 +37,7 @@ const upcomingCampaigns = [
     launchDate: "Dec 22",
     status: "Kickoff",
     progress: 28,
-    focus: "Layered travel staples"
+    focus: "Layered travel staples",
   },
 ];
 

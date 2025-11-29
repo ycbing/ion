@@ -18,14 +18,14 @@ export const createTestQueryClient = () =>
     },
   });
 
-interface ProvidersOptions extends Omit<RenderOptions, "wrapper"> {
+type ProvidersOptions = Omit<RenderOptions, "wrapper"> & {
   queryClient?: QueryClient;
-}
+};
 
-interface ProvidersProps {
+type ProvidersProps = {
   children: ReactNode;
   queryClient: QueryClient;
-}
+};
 
 const Providers = ({ children, queryClient }: ProvidersProps) => (
   <ChakraProvider theme={theme}>

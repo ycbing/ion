@@ -12,13 +12,13 @@ import { forwardRef, ReactNode } from "react";
 
 import { AppIcon, type AppIconName } from "@/components/icons";
 
-interface SectionCardProps extends BoxProps {
+type SectionCardProps = BoxProps & {
   title?: string;
   description?: string;
   icon?: AppIconName;
   actions?: ReactNode;
   children: ReactNode;
-}
+};
 
 export const SectionCard = forwardRef<HTMLDivElement, SectionCardProps>(
   ({ title, description, icon, actions, children, ...boxProps }, ref) => {

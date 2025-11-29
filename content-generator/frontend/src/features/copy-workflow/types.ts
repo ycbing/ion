@@ -1,64 +1,64 @@
-export interface CopyGenerationOptions {
+export type CopyGenerationOptions = {
   tone?: string;
   audience?: string;
   keywords?: string[];
   language?: string;
   variants?: number;
-}
+};
 
-export interface GenerateCopyPayload {
+export type GenerateCopyPayload = {
   topic: string;
   prompt?: string;
   options?: CopyGenerationOptions;
   provider?: string;
-}
+};
 
-export interface CopySuggestion {
+export type CopySuggestion = {
   id: string;
   text: string;
   metadata?: Record<string, unknown>;
-}
+};
 
-export interface CopyGenerationMetadata {
+export type CopyGenerationMetadata = {
   topic: string;
   requestedVariants: number;
   deliveredVariants: number;
-}
+};
 
-export interface CopyGenerationResult {
+export type CopyGenerationResult = {
   provider: string;
   copies: CopySuggestion[];
   metadata: CopyGenerationMetadata;
-}
+};
 
-export interface ImageStyleOptions {
+export type ImageStyleOptions = {
   palette?: string[];
   medium?: string;
   mood?: string;
   aspectRatio?: string;
-}
+};
 
-export interface GenerateImagePayload {
+export type GenerateImagePayload = {
   copy: string;
   provider?: string;
   style?: ImageStyleOptions;
-}
+};
 
-export interface GeneratedImageAsset {
+export type GeneratedImageAsset = {
   url: string;
   altText: string;
-}
+};
 
-export interface GenerateImageResult {
+export type GenerateImageResult = {
   provider: string;
   image: GeneratedImageAsset;
   metadata: {
     copyPreview: string;
     appliedStyle: Record<string, unknown>;
   };
-}
+};
 
-export interface WorkflowImageRecord extends GenerateImageResult {
+export type WorkflowImageRecord = GenerateImageResult & {
   generatedAt: string;
   copyText: string;
-}
+};

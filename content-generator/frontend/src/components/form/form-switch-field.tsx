@@ -10,11 +10,11 @@ import {
 } from "@chakra-ui/react";
 import { forwardRef, useId } from "react";
 
-interface FormSwitchFieldProps extends SwitchProps {
+type FormSwitchFieldProps = SwitchProps & {
   label: string;
   helperText?: string;
   error?: string;
-}
+};
 
 export const FormSwitchField = forwardRef<HTMLInputElement, FormSwitchFieldProps>(
   ({ label, helperText, error, id, ...rest }, ref) => {

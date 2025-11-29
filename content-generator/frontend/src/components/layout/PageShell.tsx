@@ -3,13 +3,13 @@ import { ReactNode } from "react";
 
 import { useIsMobile } from "@/hooks";
 
-interface PageShellProps extends StackProps {
+type PageShellProps = StackProps & {
   title: string;
   subtitle?: string;
   actions?: ReactNode;
   toolbar?: ReactNode;
   children: ReactNode;
-}
+};
 
 export const PageShell = ({
   title,

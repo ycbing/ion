@@ -9,17 +9,17 @@ export const providerOverviewFallback: ProviderOverview = {
         driver: "mock",
         label: "Local Mock Text Provider",
         promptTemplates: {
-          default: "Draft {{variants}} friendly marketing blurb(s) for {{topic}}."
+          default: "Draft {{variants}} friendly marketing blurb(s) for {{topic}}.",
         },
         options: {
-          maxTokens: 256
+          maxTokens: 256,
         },
         metadata: {
-          latency: "fast"
+          latency: "fast",
         },
         credentials: {},
         missingCredentials: [],
-        isActive: true
+        isActive: true,
       },
       {
         name: "openai",
@@ -27,26 +27,26 @@ export const providerOverviewFallback: ProviderOverview = {
         label: "OpenAI GPT-4.1 Mini",
         promptTemplates: {
           default:
-            "Write a concise marketing message about {{topic}}. Highlight the key benefits and keep the tone {{tone}}."
+            "Write a concise marketing message about {{topic}}. Highlight the key benefits and keep the tone {{tone}}.",
         },
         options: {
           model: "gpt-4.1-mini",
-          maxTokens: 600
+          maxTokens: 600,
         },
         metadata: {
-          supportsLanguages: ["en", "zh"]
+          supportsLanguages: ["en", "zh"],
         },
         credentials: {
           apiKey: {
             envVar: "OPENAI_API_KEY",
             optional: false,
-            present: false
-          }
+            present: false,
+          },
         },
         missingCredentials: ["apiKey"],
-        isActive: false
-      }
-    ]
+        isActive: false,
+      },
+    ],
   },
   image: {
     active: "mock",
@@ -56,39 +56,39 @@ export const providerOverviewFallback: ProviderOverview = {
         driver: "mock",
         label: "Local Mock Image Provider",
         promptTemplates: {
-          default: "Generate a placeholder visual inspired by: {{copy}}"
+          default: "Generate a placeholder visual inspired by: {{copy}}",
         },
         options: {},
         metadata: {
-          aspectRatios: ["1:1", "4:5", "16:9"]
+          aspectRatios: ["1:1", "4:5", "16:9"],
         },
         credentials: {},
         missingCredentials: [],
-        isActive: true
+        isActive: true,
       },
       {
         name: "stability",
         driver: "stability",
         label: "Stability AI (Stable Diffusion XL)",
         promptTemplates: {
-          default: "Create an illustrative image for the copy: {{copy}}"
+          default: "Create an illustrative image for the copy: {{copy}}",
         },
         options: {
-          engine: "stable-diffusion-xl-1024-v1-0"
+          engine: "stable-diffusion-xl-1024-v1-0",
         },
         metadata: {
-          preferredStyle: "photoreal"
+          preferredStyle: "photoreal",
         },
         credentials: {
           apiKey: {
             envVar: "STABILITY_API_KEY",
             optional: false,
-            present: false
-          }
+            present: false,
+          },
         },
         missingCredentials: ["apiKey"],
-        isActive: false
-      }
-    ]
-  }
+        isActive: false,
+      },
+    ],
+  },
 };
