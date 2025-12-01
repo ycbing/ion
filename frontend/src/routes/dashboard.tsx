@@ -14,7 +14,8 @@ import {
   StatNumber,
   Text,
 } from "@chakra-ui/react";
-import { Fragment } from "react";
+import { Fragment, useMemo } from "react";
+import { useTranslation } from "react-i18next";
 
 import {
   FormSelectField,
@@ -26,81 +27,135 @@ import { PageShell, SectionCard } from "@/components/layout";
 import { CopyWorkflow } from "@/features/copy-workflow";
 import { providerOverviewFallback, useProviderOverview } from "@/features/providers";
 
-const primaryChannelOptions = [
-  { label: "Xiaohongshu", value: "xiaohongshu" },
-  { label: "Douyin", value: "douyin" },
-  { label: "Weibo", value: "weibo" },
-  { label: "Instagram", value: "instagram" },
-];
-
-const toneOptions = [
-  { label: "Warm & conversational", value: "warm" },
-  { label: "Minimal & editorial", value: "minimal" },
-  { label: "Playful & upbeat", value: "playful" },
-  { label: "Luxury & polished", value: "luxury" },
-];
-
-const highlights = [
+const PRIMARY_CHANNEL_OPTIONS = [
   {
-    label: "Creator reach",
-    value: "1.8M",
-    change: "+12.4%",
+    value: "xiaohongshu",
+    labelKey:
+      "dashboard.launchNarrative.form.primaryChannel.options.xiaohongshu",
+  },
+  {
+    value: "douyin",
+    labelKey: "dashboard.launchNarrative.form.primaryChannel.options.douyin",
+  },
+  {
+    value: "weibo",
+    labelKey: "dashboard.launchNarrative.form.primaryChannel.options.weibo",
+  },
+  {
+    value: "instagram",
+    labelKey:
+      "dashboard.launchNarrative.form.primaryChannel.options.instagram",
+  },
+];
+
+const TONE_OPTION_KEYS = ["warm", "minimal", "playful", "luxury"] as const;
+
+const HIGHLIGHTS = [
+  {
     icon: "trend" as const,
+    value: "1.8M",
+    labelKey: "dashboard.highlights.creatorReach.label",
+    changeKey: "dashboard.highlights.creatorReach.change",
   },
   {
-    label: "Drafts in review",
-    value: "8",
-    change: "3 ready today",
     icon: "feather" as const,
+    value: "8",
+    labelKey: "dashboard.highlights.draftsInReview.label",
+    changeKey: "dashboard.highlights.draftsInReview.change",
   },
   {
-    label: "Launch velocity",
-    value: "92%",
-    change: "Ahead of target",
     icon: "flame" as const,
+    value: "92%",
+    labelKey: "dashboard.highlights.launchVelocity.label",
+    changeKey: "dashboard.highlights.launchVelocity.change",
   },
 ];
 
-const inspirationSnippets = [
-  "Weekend escape packing checklist",
-  "5AM skincare before sunrise hike",
-  "Muted blush palette for café hopping",
+const CREATOR_SPOTLIGHTS = [
+  {
+    name: "Avery Lee",
+    descriptionKey: "dashboard.creatorSpotlights.items.avery.description",
+    statusKey: "common:status.filming",
+  },
+  {
+    name: "Jun Park",
+    descriptionKey: "dashboard.creatorSpotlights.items.jun.description",
+    statusKey: "common:status.editing",
+  },
+  {
+    name: "Mina Zhao",
+    descriptionKey: "dashboard.creatorSpotlights.items.mina.description",
+    statusKey: "common:status.review",
+  },
+];
+
+const INSPIRATION_SNIPPETS = [
+  "dashboard.inspirationFeed.snippets.weekendEscape",
+  "dashboard.inspirationFeed.snippets.sunriseSkincare",
+  "dashboard.inspirationFeed.snippets.mutedBlushPalette",
 ];
 
 export const DashboardPage = () => {
+  const { t, i18n } = useTranslation(["pages", "common"]);
   const { data: providerOverviewData, isFetching } = useProviderOverview();
   const providerOverview = providerOverviewData ?? providerOverviewFallback;
-  const providerDomains = [
-    {
-      key: "text" as const,
-      title: "Text generation",
-      summary: providerOverview.text,
-    },
-    {
-      key: "image" as const,
-      title: "Image generation",
-      summary: providerOverview.image,
-    },
-  ];
+
+  const listFormatter = useMemo(
+    () => new Intl.ListFormat(i18n.language, { style: "long", type: "conjunction" }),
+    [i18n.language],
+  );
+
+  const providerDomains = (['text', 'image'] as const).map((key) => ({
+    key,
+    title: t(`pages:dashboard.activeProviders.domains.${key}`),
+    summary: providerOverview[key],
+  }));
+
+  const primaryChannelOptions = PRIMARY_CHANNEL_OPTIONS.map((option) => ({
+    value: option.value,
+    label: t(`pages:${option.labelKey}`),
+  }));
+
+  const toneOptions = TONE_OPTION_KEYS.map((key) => ({
+    value: key,
+    label: t(`common:toneOptions.${key}`),
+  }));
+
+  const highlightItems = HIGHLIGHTS.map((item) => ({
+    ...item,
+    label: t(`pages:${item.labelKey}`),
+    change: t(`pages:${item.changeKey}`),
+  }));
+
+  const creatorSpotlights = CREATOR_SPOTLIGHTS.map((item) => ({
+    name: item.name,
+    description: t(`pages:${item.descriptionKey}`),
+    status: t(item.statusKey),
+  }));
+
+  const inspirationSnippets = INSPIRATION_SNIPPETS.map((key) => t(`pages:${key}`));
+
+  const formatMissingCredentials = (credentials: string[]) =>
+    credentials.length > 0 ? listFormatter.format(credentials) : "";
 
   return (
     <PageShell
-      title="Creative dashboard"
-      subtitle="Curate product stories, align creator campaigns, and preview assets before each Xiaohongshu drop."
+      title={t("pages:dashboard.title")}
+      subtitle={t("pages:dashboard.subtitle")}
       actions={
         <Fragment>
           <Button variant="ghost" size="sm" leftIcon={<AppIcon name="wand" boxSize={4} />}>
-            Inspire me
+            {t("pages:dashboard.actions.inspire")}
           </Button>
           <Button variant="primary" size="sm" leftIcon={<AppIcon name="plus" boxSize={4} />}>
-            New concept
+            {t("pages:dashboard.actions.newConcept")}
           </Button>
         </Fragment>
       }
     >
       <SectionCard
-        title="Copy-to-image studio"
-        description="Brief a topic, pick your favourite AI copy, then render hero visuals in one flow."
+        title={t("pages:dashboard.copyToImage.title")}
+        description={t("pages:dashboard.copyToImage.description")}
         icon="wand"
       >
         <CopyWorkflow />
@@ -108,37 +163,41 @@ export const DashboardPage = () => {
 
       <SimpleGrid columns={{ base: 1, lg: 2 }} spacing={{ base: 6, lg: 8 }}>
         <SectionCard
-          title="Launch narrative"
-          description="Define the emotional hook, tone, and distribution cadence for your next spotlight."
+          title={t("pages:dashboard.launchNarrative.title")}
+          description={t("pages:dashboard.launchNarrative.description")}
           icon="sparkles"
           actions={
             <Button variant="soft" size="sm" leftIcon={<AppIcon name="palette" boxSize={4} />}>
-              Browse templates
+              {t("pages:dashboard.launchNarrative.actions.browseTemplates")}
             </Button>
           }
         >
           <Stack spacing={4}>
             <FormTextField
-              label="Campaign headline"
-              placeholder="Tease the weekender drop with dawn-toned nostalgia"
+              label={t("pages:dashboard.launchNarrative.form.headline.label")}
+              placeholder={t("pages:dashboard.launchNarrative.form.headline.placeholder")}
             />
             <FormSelectField
-              label="Primary channel"
+              label={t("pages:dashboard.launchNarrative.form.primaryChannel.label")}
               options={primaryChannelOptions}
-              placeholder="Select a platform"
+              placeholder={t("pages:dashboard.launchNarrative.form.primaryChannel.placeholder")}
             />
-            <FormSelectField label="Tone" options={toneOptions} placeholder="Select tone" />
+            <FormSelectField
+              label={t("pages:dashboard.launchNarrative.form.tone.label")}
+              options={toneOptions}
+              placeholder={t("common:form.selectTone")}
+            />
             <FormTextareaField
-              label="Story direction"
-              placeholder="Outline the hook, hero shots, and call-to-action you want creators to riff on."
+              label={t("pages:dashboard.launchNarrative.form.storyDirection.label")}
+              placeholder={t("pages:dashboard.launchNarrative.form.storyDirection.placeholder")}
               rows={4}
             />
           </Stack>
         </SectionCard>
 
         <SectionCard
-          title="Active providers"
-          description="Connected models powering ideation and sentiment checks."
+          title={t("pages:dashboard.activeProviders.title")}
+          description={t("pages:dashboard.activeProviders.description")}
           icon="dashboard"
         >
           <Stack spacing={4}>
@@ -160,40 +219,51 @@ export const DashboardPage = () => {
                     <Stack spacing={1}>
                       <Text fontWeight="semibold">{title}</Text>
                       <Text fontSize="sm" color="subtle">
-                        Active: {activeLabel}
+                        {t("pages:dashboard.activeProviders.activeLabel", { provider: activeLabel })}
                       </Text>
                     </Stack>
                     <Badge colorScheme="brand" variant="subtle">
-                      {summary.providers.length} option{summary.providers.length === 1 ? "" : "s"}
+                      {t("common:labels.options", { count: summary.providers.length })}
                     </Badge>
                   </HStack>
                   <Stack spacing={3}>
-                    {summary.providers.map((provider) => (
-                      <HStack key={provider.name} justify="space-between" align="flex-start">
-                        <Stack spacing={0} flex="1">
-                          <Text fontWeight="medium">{provider.label}</Text>
-                          <Text fontSize="sm" color="subtle">
-                            Driver: {provider.driver}
-                          </Text>
-                        </Stack>
-                        <Badge
-                          variant={provider.isActive ? "solid" : "subtle"}
-                          colorScheme={
-                            provider.isActive
-                              ? "brand"
-                              : provider.missingCredentials.length > 0
-                              ? "red"
-                              : "green"
-                          }
-                        >
-                          {provider.isActive
-                            ? "Active"
-                            : provider.missingCredentials.length > 0
-                            ? "Credentials"
-                            : "Ready"}
-                        </Badge>
-                      </HStack>
-                    ))}
+                    {summary.providers.map((provider) => {
+                      const statusLabel = provider.isActive
+                        ? t("common:status.active")
+                        : provider.missingCredentials.length > 0
+                        ? t("common:status.credentialsRequired")
+                        : t("common:status.ready");
+
+                      return (
+                        <HStack key={provider.name} justify="space-between" align="flex-start">
+                          <Stack spacing={0} flex="1">
+                            <Text fontWeight="medium">{provider.label}</Text>
+                            <Text fontSize="sm" color="subtle">
+                              {t("pages:dashboard.activeProviders.driver", { driver: provider.driver })}
+                            </Text>
+                            {provider.missingCredentials.length > 0 ? (
+                              <Text fontSize="sm" color="subtle">
+                                {t("pages:dashboard.activeProviders.missing", {
+                                  credentials: formatMissingCredentials(provider.missingCredentials),
+                                })}
+                              </Text>
+                            ) : null}
+                          </Stack>
+                          <Badge
+                            variant={provider.isActive ? "solid" : "subtle"}
+                            colorScheme={
+                              provider.isActive
+                                ? "brand"
+                                : provider.missingCredentials.length > 0
+                                ? "red"
+                                : "green"
+                            }
+                          >
+                            {statusLabel}
+                          </Badge>
+                        </HStack>
+                      );
+                    })}
                   </Stack>
                 </Stack>
               );
@@ -204,7 +274,7 @@ export const DashboardPage = () => {
       </SimpleGrid>
 
       <SimpleGrid columns={{ base: 1, md: 3 }} spacing={{ base: 6, md: 6 }}>
-        {highlights.map((highlight) => (
+        {highlightItems.map((highlight) => (
           <SectionCard key={highlight.label} icon={highlight.icon}>
             <Stat>
               <StatLabel color="subtle">{highlight.label}</StatLabel>
@@ -217,26 +287,22 @@ export const DashboardPage = () => {
 
       <SimpleGrid columns={{ base: 1, lg: 2 }} spacing={{ base: 6, lg: 8 }}>
         <SectionCard
-          title="Creator spotlights"
-          description="Keep tabs on your top storytellers and their next deliverables."
+          title={t("pages:dashboard.creatorSpotlights.title")}
+          description={t("pages:dashboard.creatorSpotlights.description")}
           icon="feather"
         >
           <Stack spacing={4}>
-            {["Avery Lee", "Jun Park", "Mina Zhao"].map((creator, index) => (
-              <HStack key={creator} align="center" spacing={4}>
-                <Avatar name={creator} size="sm" bg="brand.500" color="white" />
+            {creatorSpotlights.map((creator, index) => (
+              <HStack key={`${creator.name}-${index}`} align="center" spacing={4}>
+                <Avatar name={creator.name} size="sm" bg="brand.500" color="white" />
                 <Box flex="1">
-                  <Text fontWeight="medium">{creator}</Text>
+                  <Text fontWeight="medium">{creator.name}</Text>
                   <Text fontSize="sm" color="subtle">
-                    {index === 0
-                      ? "Sunrise skincare vlog • Due tomorrow"
-                      : index === 1
-                        ? "City café photo diary • Draft present"
-                        : "Capsule closet carousel • In review"}
+                    {creator.description}
                   </Text>
                 </Box>
                 <Badge colorScheme="brand" variant="subtle">
-                  {index === 0 ? "Filming" : index === 1 ? "Editing" : "Review"}
+                  {creator.status}
                 </Badge>
               </HStack>
             ))}
@@ -244,12 +310,12 @@ export const DashboardPage = () => {
         </SectionCard>
 
         <SectionCard
-          title="Inspiration feed"
-          description="Snippets trending within your segment. Save to moodboard or push to a brief."
+          title={t("pages:dashboard.inspirationFeed.title")}
+          description={t("pages:dashboard.inspirationFeed.description")}
           icon="flame"
           actions={
             <Button variant="ghost" size="sm" leftIcon={<AppIcon name="plus" boxSize={4} />}>
-              Add to moodboard
+              {t("pages:dashboard.inspirationFeed.actions.addToMoodboard")}
             </Button>
           }
         >
@@ -261,7 +327,7 @@ export const DashboardPage = () => {
                   <Text fontWeight="medium">{snippet}</Text>
                 </HStack>
                 <Text fontSize="sm" color="subtle">
-                  Tap to view suggested angles and recommended creator pairings.
+                  {t("pages:dashboard.inspirationFeed.helperText")}
                 </Text>
                 <Divider borderColor="ink.100" />
               </Stack>

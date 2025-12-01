@@ -13,6 +13,7 @@ import {
   Stack,
   Text,
 } from "@chakra-ui/react";
+import { useTranslation } from "react-i18next";
 import { Navigate, NavLink, Route, Routes } from "react-router-dom";
 
 import { AppIcon } from "@/components/icons";
@@ -23,14 +24,16 @@ import {
   SettingsPage,
 } from "@/routes";
 
-const navigation = [
-  { label: "Dashboard", to: "/", icon: "dashboard" as const },
-  { label: "Campaigns", to: "/campaigns", icon: "campaigns" as const },
-  { label: "Insights", to: "/insights", icon: "insights" as const },
-  { label: "Settings", to: "/settings", icon: "settings" as const },
+const navigationItems = [
+  { key: "dashboard", to: "/", icon: "dashboard" as const },
+  { key: "campaigns", to: "/campaigns", icon: "campaigns" as const },
+  { key: "insights", to: "/insights", icon: "insights" as const },
+  { key: "settings", to: "/settings", icon: "settings" as const },
 ];
 
 const App = () => {
+  const { t } = useTranslation("common");
+
   return (
     <Flex direction="column" minH="100vh" bg="canvas">
       <Box
@@ -58,15 +61,15 @@ const App = () => {
                 <AppIcon name="sparkles" boxSize={5} />
               </Flex>
               <Stack spacing={0}>
-                <Text fontWeight="semibold">Red Studio</Text>
+                <Text fontWeight="semibold">{t("app.name")}</Text>
                 <Text fontSize="sm" color="subtle">
-                  Creator workspace
+                  {t("app.tagline")}
                 </Text>
               </Stack>
             </HStack>
 
             <HStack spacing={2} display={{ base: "none", md: "flex" }}>
-              {navigation.map((item) => (
+              {navigationItems.map((item) => (
                 <NavLink key={item.to} to={item.to} end={item.to === "/"}>
                   {({ isActive }) => (
                     <Button
@@ -78,7 +81,7 @@ const App = () => {
                       bg={isActive ? "brand.50" : "transparent"}
                       _hover={{ bg: "brand.50", color: "brand.600" }}
                     >
-                      {item.label}
+                      {t(`navigation.${item.key}`)}
                     </Button>
                   )}
                 </NavLink>
@@ -90,22 +93,17 @@ const App = () => {
                 <MenuButton
                   as={IconButton}
                   icon={<AppIcon name="menu" boxSize={5} />}
-                  aria-label="Open navigation"
+                  aria-label={t("aria.openNavigation")}
                   display={{ base: "inline-flex", md: "none" }}
                   variant="ghost"
                   borderRadius="pill"
                 />
                 <MenuList>
-                  {navigation.map((item) => (
-                    <MenuItem
-                      key={item.to}
-                      as={NavLink}
-                      to={item.to}
-                      end={item.to === "/"}
-                    >
+                  {navigationItems.map((item) => (
+                    <MenuItem key={item.to} as={NavLink} to={item.to} end={item.to === "/"}>
                       <HStack spacing={3}>
                         <AppIcon name={item.icon} boxSize={4} />
-                        <Text>{item.label}</Text>
+                        <Text>{t(`navigation.${item.key}`)}</Text>
                       </HStack>
                     </MenuItem>
                   ))}
@@ -117,7 +115,7 @@ const App = () => {
                 leftIcon={<AppIcon name="plus" boxSize={4} />}
                 display={{ base: "none", md: "inline-flex" }}
               >
-                New brief
+                {t("buttons.newBrief")}
               </Button>
               <Avatar name="Avery Lee" size="sm" bg="brand.500" color="white" />
             </HStack>

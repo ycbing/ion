@@ -10,173 +10,186 @@ import {
   Text,
 } from "@chakra-ui/react";
 import { Fragment } from "react";
+import { useTranslation } from "react-i18next";
 
 import { AppIcon } from "@/components/icons";
 import { PageShell, SectionCard } from "@/components/layout";
 
-const upcomingCampaigns = [
+const UPCOMING_CAMPAIGNS = [
   {
     id: "camp-1",
-    name: "Midnight market pop-up",
-    launchDate: "Dec 08",
-    status: "In production",
+    nameKey: "campaigns.upcomingLaunches.items.midnightMarket.name",
+    statusKey: "campaigns.upcomingLaunches.items.midnightMarket.status",
+    focusKey: "campaigns.upcomingLaunches.items.midnightMarket.focus",
+    launchDateKey: "campaigns.upcomingLaunches.items.midnightMarket.launchDate",
     progress: 72,
-    focus: "Streetfood-meets-skin",
   },
   {
     id: "camp-2",
-    name: "Red holiday gifting",
-    launchDate: "Dec 15",
-    status: "Brief ready",
+    nameKey: "campaigns.upcomingLaunches.items.holidayGifting.name",
+    statusKey: "campaigns.upcomingLaunches.items.holidayGifting.status",
+    focusKey: "campaigns.upcomingLaunches.items.holidayGifting.focus",
+    launchDateKey: "campaigns.upcomingLaunches.items.holidayGifting.launchDate",
     progress: 45,
-    focus: "Warm capsule moments",
   },
   {
     id: "camp-3",
-    name: "Snowbound essentials",
-    launchDate: "Dec 22",
-    status: "Kickoff",
+    nameKey: "campaigns.upcomingLaunches.items.snowboundEssentials.name",
+    statusKey: "campaigns.upcomingLaunches.items.snowboundEssentials.status",
+    focusKey: "campaigns.upcomingLaunches.items.snowboundEssentials.focus",
+    launchDateKey: "campaigns.upcomingLaunches.items.snowboundEssentials.launchDate",
     progress: 28,
-    focus: "Layered travel staples",
   },
 ];
 
-const creatorPods = [
+const CREATOR_PODS = [
   {
     id: "pod-1",
-    name: "Glow Lab",
+    nameKey: "campaigns.creatorPods.items.glowLab.name",
     owners: ["Avery", "Linh", "Noor"],
-    status: "Final tweaks",
+    statusKey: "campaigns.creatorPods.items.glowLab.status",
   },
   {
     id: "pod-2",
-    name: "City Sketchers",
+    nameKey: "campaigns.creatorPods.items.citySketchers.name",
     owners: ["Haruto", "Mia"],
-    status: "Drafting",
+    statusKey: "campaigns.creatorPods.items.citySketchers.status",
   },
   {
     id: "pod-3",
-    name: "Weekend Drifters",
+    nameKey: "campaigns.creatorPods.items.weekendDrifters.name",
     owners: ["Sora", "Nyari", "Leo"],
-    status: "Ready to publish",
+    statusKey: "campaigns.creatorPods.items.weekendDrifters.status",
   },
 ];
 
-export const CampaignsPage = () => (
-  <PageShell
-    title="Campaign planner"
-    subtitle="Track every drop from brief to live moment, and keep creator pods aligned on deliverables."
-    actions={
-      <Fragment>
-        <Button variant="ghost" size="sm" leftIcon={<AppIcon name="calendar" boxSize={4} />}>
-          Calendar view
-        </Button>
-        <Button variant="primary" size="sm" leftIcon={<AppIcon name="plus" boxSize={4} />}>
-          New launch
-        </Button>
-      </Fragment>
-    }
-  >
-    <SectionCard
-      title="Upcoming launches"
-      description="Monitor velocity, stage, and focus area for the next wave of stories."
-      icon="campaigns"
-    >
-      <Stack spacing={5}>
-        {upcomingCampaigns.map((campaign) => (
-          <Stack key={campaign.id} spacing={3} borderRadius="xl" border="1px solid" borderColor="ink.100" p={4}>
-            <HStack justify="space-between" align="flex-start">
-              <Stack spacing={1}>
-                <Text fontWeight="semibold">{campaign.name}</Text>
-                <Text fontSize="sm" color="subtle">
-                  Focus: {campaign.focus}
-                </Text>
-              </Stack>
-              <Badge colorScheme="brand" variant="subtle">
-                {campaign.status}
-              </Badge>
-            </HStack>
-            <HStack justify="space-between" align="center">
-              <HStack spacing={3} color="subtle">
-                <AppIcon name="calendar" boxSize={4} />
-                <Text fontSize="sm">{campaign.launchDate}</Text>
-              </HStack>
-              <HStack spacing={3} color="subtle">
-                <AppIcon name="clock" boxSize={4} />
-                <Text fontSize="sm">{campaign.progress}% ready</Text>
-              </HStack>
-            </HStack>
-            <Progress value={campaign.progress} colorScheme="brand" size="sm" borderRadius="pill" />
-          </Stack>
-        ))}
-      </Stack>
-    </SectionCard>
+const WORKFLOW_AUTOMATIONS = [
+  {
+    icon: "wand" as const,
+    titleKey: "campaigns.workflowAutomation.items.toneCheck.title",
+    descriptionKey: "campaigns.workflowAutomation.items.toneCheck.description",
+  },
+  {
+    icon: "trend" as const,
+    titleKey: "campaigns.workflowAutomation.items.trendSync.title",
+    descriptionKey: "campaigns.workflowAutomation.items.trendSync.description",
+  },
+  {
+    icon: "flame" as const,
+    titleKey: "campaigns.workflowAutomation.items.escalation.title",
+    descriptionKey: "campaigns.workflowAutomation.items.escalation.description",
+  },
+];
 
-    <SimpleGrid columns={{ base: 1, md: 2 }} spacing={{ base: 6, md: 8 }}>
+export const CampaignsPage = () => {
+  const { t } = useTranslation(["pages", "common"]);
+
+  return (
+    <PageShell
+      title={t("pages:campaigns.title")}
+      subtitle={t("pages:campaigns.subtitle")}
+      actions={
+        <Fragment>
+          <Button variant="ghost" size="sm" leftIcon={<AppIcon name="calendar" boxSize={4} />}>
+            {t("pages:campaigns.actions.calendarView")}
+          </Button>
+          <Button variant="primary" size="sm" leftIcon={<AppIcon name="plus" boxSize={4} />}>
+            {t("pages:campaigns.actions.newLaunch")}
+          </Button>
+        </Fragment>
+      }
+    >
       <SectionCard
-        title="Creator pods"
-        description="Sprint-based groups collaborating on each launch."
-        icon="sparkles"
+        title={t("pages:campaigns.upcomingLaunches.title")}
+        description={t("pages:campaigns.upcomingLaunches.description")}
+        icon="campaigns"
       >
-        <Stack spacing={4}>
-          {creatorPods.map((pod) => (
-            <Stack key={pod.id} spacing={2} borderRadius="xl" border="1px solid" borderColor="ink.100" p={4}>
-              <HStack justify="space-between" align="center">
-                <Text fontWeight="semibold">{pod.name}</Text>
+        <Stack spacing={5}>
+          {UPCOMING_CAMPAIGNS.map((campaign) => (
+            <Stack key={campaign.id} spacing={3} borderRadius="xl" border="1px solid" borderColor="ink.100" p={4}>
+              <HStack justify="space-between" align="flex-start">
+                <Stack spacing={1}>
+                  <Text fontWeight="semibold">{t(`pages:${campaign.nameKey}`)}</Text>
+                  <Text fontSize="sm" color="subtle">
+                    {t("pages:campaigns.upcomingLaunches.focusLabel", {
+                      focus: t(`pages:${campaign.focusKey}`),
+                    })}
+                  </Text>
+                </Stack>
                 <Badge colorScheme="brand" variant="subtle">
-                  {pod.status}
+                  {t(`pages:${campaign.statusKey}`)}
                 </Badge>
               </HStack>
-              <AvatarGroup size="sm" max={4}>
-                {pod.owners.map((owner) => (
-                  <Avatar key={owner} name={owner} bg="brand.500" color="white" />
-                ))}
-              </AvatarGroup>
+              <HStack justify="space-between" align="center">
+                <HStack spacing={3} color="subtle">
+                  <AppIcon name="calendar" boxSize={4} />
+                  <Text fontSize="sm">{t(`pages:${campaign.launchDateKey}`)}</Text>
+                </HStack>
+                <HStack spacing={3} color="subtle">
+                  <AppIcon name="clock" boxSize={4} />
+                  <Text fontSize="sm">
+                    {t("pages:campaigns.upcomingLaunches.progressLabel", {
+                      value: campaign.progress,
+                    })}
+                  </Text>
+                </HStack>
+              </HStack>
+              <Progress value={campaign.progress} colorScheme="brand" size="sm" borderRadius="pill" />
             </Stack>
           ))}
         </Stack>
       </SectionCard>
 
-      <SectionCard
-        title="Workflow automation"
-        description="Pre-flight checks ensure every product story stays on brand."
-        icon="shield"
-        actions={
-          <Button variant="soft" size="sm" leftIcon={<AppIcon name="bell" boxSize={4} />}>
-            Notification rules
-          </Button>
-        }
-      >
-        <Stack spacing={4}>
-          <HStack spacing={3} align="flex-start">
-            <AppIcon name="wand" boxSize={5} color="brand.500" />
-            <Stack spacing={1}>
-              <Text fontWeight="medium">Tone check</Text>
-              <Text fontSize="sm" color="subtle">
-                Auto-review drafts for the "warm & conversational" tone before final delivery.
-              </Text>
-            </Stack>
-          </HStack>
-          <HStack spacing={3} align="flex-start">
-            <AppIcon name="trend" boxSize={5} color="brand.500" />
-            <Stack spacing={1}>
-              <Text fontWeight="medium">Trend sync</Text>
-              <Text fontSize="sm" color="subtle">
-                Surface top Xiaohongshu hashtag clusters relevant to your campaign focus.
-              </Text>
-            </Stack>
-          </HStack>
-          <HStack spacing={3} align="flex-start">
-            <AppIcon name="flame" boxSize={5} color="brand.500" />
-            <Stack spacing={1}>
-              <Text fontWeight="medium">Escalation window</Text>
-              <Text fontSize="sm" color="subtle">
-                Notify approvers if drafts stay untouched for more than 36 hours.
-              </Text>
-            </Stack>
-          </HStack>
-        </Stack>
-      </SectionCard>
-    </SimpleGrid>
-  </PageShell>
-);
+      <SimpleGrid columns={{ base: 1, md: 2 }} spacing={{ base: 6, md: 8 }}>
+        <SectionCard
+          title={t("pages:campaigns.creatorPods.title")}
+          description={t("pages:campaigns.creatorPods.description")}
+          icon="sparkles"
+        >
+          <Stack spacing={4}>
+            {CREATOR_PODS.map((pod) => (
+              <Stack key={pod.id} spacing={2} borderRadius="xl" border="1px solid" borderColor="ink.100" p={4}>
+                <HStack justify="space-between" align="center">
+                  <Text fontWeight="semibold">{t(`pages:${pod.nameKey}`)}</Text>
+                  <Badge colorScheme="brand" variant="subtle">
+                    {t(`pages:${pod.statusKey}`)}
+                  </Badge>
+                </HStack>
+                <AvatarGroup size="sm" max={4}>
+                  {pod.owners.map((owner) => (
+                    <Avatar key={owner} name={owner} bg="brand.500" color="white" />
+                  ))}
+                </AvatarGroup>
+              </Stack>
+            ))}
+          </Stack>
+        </SectionCard>
+
+        <SectionCard
+          title={t("pages:campaigns.workflowAutomation.title")}
+          description={t("pages:campaigns.workflowAutomation.description")}
+          icon="shield"
+          actions={
+            <Button variant="soft" size="sm" leftIcon={<AppIcon name="bell" boxSize={4} />}>
+              {t("pages:campaigns.workflowAutomation.actions.notificationRules")}
+            </Button>
+          }
+        >
+          <Stack spacing={4}>
+            {WORKFLOW_AUTOMATIONS.map((item) => (
+              <HStack key={item.titleKey} spacing={3} align="flex-start">
+                <AppIcon name={item.icon} boxSize={5} color="brand.500" />
+                <Stack spacing={1}>
+                  <Text fontWeight="medium">{t(`pages:${item.titleKey}`)}</Text>
+                  <Text fontSize="sm" color="subtle">
+                    {t(`pages:${item.descriptionKey}`)}
+                  </Text>
+                </Stack>
+              </HStack>
+            ))}
+          </Stack>
+        </SectionCard>
+      </SimpleGrid>
+    </PageShell>
+  );
+};

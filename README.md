@@ -111,6 +111,16 @@ npm run lint --workspace frontend    # Run ESLint with TypeScript support
 npm run test --workspace frontend    # Execute Jest + Testing Library suites
 ```
 
+## Internationalization
+
+The frontend is fully localized with [react-i18next](https://react.i18next.com/). Translation resources live under `frontend/src/locales/<language>/{common,pages,features}.json`, and the i18n client is initialised in `frontend/src/config/i18n.ts`. Chinese (`zh-CN`) is loaded by default, with English as an optional secondary language for reference.
+
+To add another language:
+
+1. Duplicate the JSON files in `frontend/src/locales/en/` (or `zh-CN/`) into a new language folder, translating the values as needed.
+2. Register the language code in `SUPPORTED_LANGUAGES` inside `frontend/src/config/i18n.ts`.
+3. Provide any language-specific assets (e.g. fonts) if required. The language selector in **Settings → Language preferences** will automatically surface the new option once the files are in place.
+
 ## Testing & quality
 
 From the repository root you can run aggregate commands across all workspaces:

@@ -1,0 +1,170 @@
+{
+  "copyWorkflow": {
+    "errors": {
+      "generic": "出现问题，请稍后再试。"
+    },
+    "toasts": {
+      "copyReady": {
+        "title": "文案已生成",
+        "description_one": "{{count}} 个版本由 {{provider}} 创建。",
+        "description_other": "{{count}} 个版本由 {{provider}} 创建。"
+      },
+      "copyFailed": {
+        "title": "文案生成失败"
+      },
+      "imageReady": {
+        "title": "图像已生成",
+        "description": "由 {{provider}} 生成。"
+      },
+      "imageFailed": {
+        "title": "图像生成失败"
+      },
+      "providersUpdated": {
+        "title": "供应商已更新",
+        "description": "后续生成将使用新的配置。"
+      },
+      "providersFailed": {
+        "title": "无法更新供应商"
+      }
+    },
+    "activeProviders": {
+      "title": "当前配置",
+      "summary": "文本：{{textProvider}} · 图像：{{imageProvider}}",
+      "manageButton": "管理供应商"
+    },
+    "actions": {
+      "retry": "重试"
+    },
+    "suggestions": {
+      "title": "AI 建议",
+      "provider": "由 {{provider}} 驱动",
+      "providerFallback": "供应商响应",
+      "variantCount_one": "{{count}} 个版本",
+      "variantCount_other": "{{count}} 个版本",
+      "emptyPrompt": "请输入主题以查看当前启用的 AI 供应商生成的定制文案。",
+      "noVariants": "未返回任何文案方案，请调整简报后重新生成。",
+      "useDirection": "使用此方向",
+      "selected": "已选择",
+      "variant": "版本"
+    },
+    "gallery": {
+      "shareSuccess": {
+        "title": "链接已复制",
+        "description": "将生成的图像分享给协作者。"
+      },
+      "shareError": {
+        "title": "分享失败",
+        "description": "未能复制图像链接，请尝试手动复制。"
+      },
+      "emptyState": "确认文案后生成的图像会出现在这里。",
+      "actions": {
+        "download": "下载",
+        "share": "分享"
+      }
+    },
+    "imageForm": {
+      "title": "确认文案方向",
+      "subtitle": {
+        "ready": "在生成图像前微调视觉风格。",
+        "empty": "请选择一个文案版本以继续。"
+      },
+      "copyPlaceholder": "选择的文案将显示在此处",
+      "fields": {
+        "palette": {
+          "label": "色板",
+          "placeholder": "以逗号分隔颜色",
+          "helper": "用于调整整体氛围（最多 8 种颜色）。"
+        },
+        "medium": {
+          "label": "媒介",
+          "placeholder": "例如：柔和插画"
+        },
+        "mood": {
+          "label": "情绪",
+          "placeholder": "例如：温暖极简"
+        },
+        "aspectRatio": {
+          "label": "画面比例"
+        }
+      },
+      "aspectRatio": {
+        "square": "1:1 正方形",
+        "portrait": "4:5 竖图",
+        "widescreen": "16:9 宽屏"
+      },
+      "defaults": {
+        "palette": "柔和丁香, 清晨桃色",
+        "medium": "胶片摄影",
+        "mood": "梦幻乐观"
+      },
+      "providerHint": "图像由 {{provider}} 生成",
+      "providerFallback": "已启用图像供应商",
+      "actions": {
+        "generate": "生成图像"
+      }
+    },
+    "providerSettings": {
+      "title": "AI 供应商设置",
+      "domains": {
+        "text": "文本生成",
+        "image": "图像生成"
+      },
+      "activeLabel": "当前启用：{{provider}}",
+      "driver": "驱动：{{driver}}",
+      "missing": "缺少：{{credentials}}",
+      "actions": {
+        "save": "保存供应商设置"
+      }
+    },
+    "topicForm": {
+      "errors": {
+        "topicTooShort": "主题需至少 3 个字符。"
+      },
+      "fields": {
+        "topic": {
+          "label": "主题",
+          "placeholder": "例如：清晨护肤露营仪式",
+          "helper": "概述希望 AI 发散的核心内容。"
+        },
+        "prompt": {
+          "label": "创意方向",
+          "placeholder": "补充背景、产品亮点或希望包含的行动号召。"
+        },
+        "tone": {
+          "label": "语调",
+          "placeholder": "请选择语调"
+        },
+        "audience": {
+          "label": "受众",
+          "placeholder": "请选择受众"
+        },
+        "keywords": {
+          "label": "关键词",
+          "placeholder": "用逗号分隔关键词",
+          "helper": "可选强调词（最多 12 个）。"
+        },
+        "language": {
+          "label": "目标语言"
+        },
+        "variants": {
+          "label": "生成版本数"
+        }
+      },
+      "audienceOptions": {
+        "genzExplorers": "Z 世代城市探索者",
+        "weekendStorytellers": "周末故事记录者",
+        "wellness": "身心平衡爱好者",
+        "premium": "高端消费人群"
+      },
+      "languageOptions": {
+        "zh": "简体中文",
+        "en": "English",
+        "ko": "한국어",
+        "ja": "日本語"
+      },
+      "actions": {
+        "generate": "生成文案灵感"
+      }
+    }
+  }
+}

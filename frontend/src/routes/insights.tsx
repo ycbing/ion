@@ -13,130 +13,135 @@ import {
   Text,
 } from "@chakra-ui/react";
 import { Fragment } from "react";
+import { useTranslation } from "react-i18next";
 
 import { AppIcon } from "@/components/icons";
 import { PageShell, SectionCard } from "@/components/layout";
 
-const sentimentBreakdown = [
-  { label: "Positive", value: 68, color: "brand.500" },
-  { label: "Neutral", value: 22, color: "ink.400" },
-  { label: "Constructive", value: 10, color: "ink.300" },
+const SUMMARY_STATS = [
+  {
+    icon: "trend" as const,
+    value: "2.6M",
+    labelKey: "insights.summaryStats.weeklyReach.label",
+    helpKey: "insights.summaryStats.weeklyReach.help",
+  },
+  {
+    icon: "clock" as const,
+    value: "4m 12s",
+    labelKey: "insights.summaryStats.engagementDepth.label",
+    helpKey: "insights.summaryStats.engagementDepth.help",
+  },
+  {
+    icon: "sparkles" as const,
+    value: "1.9x",
+    labelKey: "insights.summaryStats.saveToShare.label",
+    helpKey: "insights.summaryStats.saveToShare.help",
+  },
 ];
 
-const growthTimeline = [
+const SENTIMENT_BREAKDOWN = [
+  { value: 68, color: "brand.500", labelKey: "insights.sentiment.positive" },
+  { value: 22, color: "ink.400", labelKey: "insights.sentiment.neutral" },
+  { value: 10, color: "ink.300", labelKey: "insights.sentiment.constructive" },
+];
+
+const MOMENTUM_SIGNALS = [
   {
-    label: "Saved moodboards",
+    labelKey: "insights.momentum.savedMoodboards.label",
     value: "+34%",
-    detail: "Creators are bookmarking more product storytelling references",
+    detailKey: "insights.momentum.savedMoodboards.detail",
   },
   {
-    label: "Carousel completion",
+    labelKey: "insights.momentum.carouselCompletion.label",
     value: "92%",
-    detail: "Draft-to-publish rate for how-to sequences this week",
+    detailKey: "insights.momentum.carouselCompletion.detail",
   },
   {
-    label: "Avg. save rate",
+    labelKey: "insights.momentum.averageSaveRate.label",
     value: "6.8x",
-    detail: "Versus lifestyle benchmark for the same period",
+    detailKey: "insights.momentum.averageSaveRate.detail",
   },
 ];
 
-export const InsightsPage = () => (
-  <PageShell
-    title="Campaign insights"
-    subtitle="Stay ahead of community sentiment, optimise creator briefs, and double down on high-performing narratives."
-    actions={
-      <Fragment>
-        <Button variant="ghost" size="sm" leftIcon={<AppIcon name="trend" boxSize={4} />}>
-          Export report
-        </Button>
-        <Button variant="primary" size="sm" leftIcon={<AppIcon name="plus" boxSize={4} />}>
-          Create dashboard
-        </Button>
-      </Fragment>
-    }
-  >
-    <SimpleGrid columns={{ base: 1, md: 3 }} spacing={{ base: 6, md: 8 }}>
-      {[
-        {
-          label: "Weekly reach",
-          value: "2.6M",
-          helpText: "+18.2% vs last week",
-          icon: "trend" as const,
-        },
-        {
-          label: "Engagement depth",
-          value: "4m 12s",
-          helpText: "Avg. watch time on story-led videos",
-          icon: "clock" as const,
-        },
-        {
-          label: "Save to share",
-          value: "1.9x",
-          helpText: "Saves vs shares on hero posts",
-          icon: "sparkles" as const,
-        },
-      ].map((stat) => (
-        <SectionCard key={stat.label} icon={stat.icon}>
-          <Stat>
-            <StatLabel color="subtle">{stat.label}</StatLabel>
-            <StatNumber>{stat.value}</StatNumber>
-            <StatHelpText color="brand.500">{stat.helpText}</StatHelpText>
-          </Stat>
+export const InsightsPage = () => {
+  const { t } = useTranslation(["pages", "common"]);
+
+  return (
+    <PageShell
+      title={t("pages:insights.title")}
+      subtitle={t("pages:insights.subtitle")}
+      actions={
+        <Fragment>
+          <Button variant="ghost" size="sm" leftIcon={<AppIcon name="trend" boxSize={4} />}>
+            {t("pages:insights.actions.exportReport")}
+          </Button>
+          <Button variant="primary" size="sm" leftIcon={<AppIcon name="plus" boxSize={4} />}>
+            {t("pages:insights.actions.createDashboard")}
+          </Button>
+        </Fragment>
+      }
+    >
+      <SimpleGrid columns={{ base: 1, md: 3 }} spacing={{ base: 6, md: 8 }}>
+        {SUMMARY_STATS.map((stat) => (
+          <SectionCard key={stat.labelKey} icon={stat.icon}>
+            <Stat>
+              <StatLabel color="subtle">{t(`pages:${stat.labelKey}`)}</StatLabel>
+              <StatNumber>{stat.value}</StatNumber>
+              <StatHelpText color="brand.500">{t(`pages:${stat.helpKey}`)}</StatHelpText>
+            </Stat>
+          </SectionCard>
+        ))}
+      </SimpleGrid>
+
+      <SimpleGrid columns={{ base: 1, md: 2 }} spacing={{ base: 6, md: 8 }}>
+        <SectionCard
+          title={t("pages:insights.sentimentPulse.title")}
+          description={t("pages:insights.sentimentPulse.description")}
+          icon="insights"
+        >
+          <Stack spacing={4}>
+            {SENTIMENT_BREAKDOWN.map((sentiment) => (
+              <Stack key={sentiment.labelKey} spacing={1}>
+                <HStack justify="space-between" align="center">
+                  <Text fontWeight="medium">{t(`pages:${sentiment.labelKey}`)}</Text>
+                  <Badge colorScheme="brand" variant="subtle">
+                    {sentiment.value}%
+                  </Badge>
+                </HStack>
+                <Progress
+                  value={sentiment.value}
+                  size="sm"
+                  colorScheme={sentiment.color === "brand.500" ? "brand" : "gray"}
+                  borderRadius="pill"
+                />
+              </Stack>
+            ))}
+          </Stack>
         </SectionCard>
-      ))}
-    </SimpleGrid>
 
-    <SimpleGrid columns={{ base: 1, md: 2 }} spacing={{ base: 6, md: 8 }}>
-      <SectionCard
-        title="Sentiment pulse"
-        description="How your community feels about current talking points on Xiaohongshu."
-        icon="insights"
-      >
-        <Stack spacing={4}>
-          {sentimentBreakdown.map((sentiment) => (
-            <Stack key={sentiment.label} spacing={1}>
-              <HStack justify="space-between" align="center">
-                <Text fontWeight="medium">{sentiment.label}</Text>
-                <Badge colorScheme="brand" variant="subtle">
-                  {sentiment.value}%
-                </Badge>
-              </HStack>
-              <Progress
-                value={sentiment.value}
-                size="sm"
-                colorScheme={sentiment.label === "Positive" ? "brand" : "gray"}
-                borderRadius="pill"
-              />
-            </Stack>
-          ))}
-        </Stack>
-      </SectionCard>
-
-      <SectionCard
-        title="Momentum signals"
-        description="Recent wins and areas to optimise based on performance data."
-        icon="shield"
-      >
-        <Stack spacing={4}>
-          {growthTimeline.map((item, index) => (
-            <Stack key={item.label} spacing={2}>
-              <HStack justify="space-between" align="center">
-                <Text fontWeight="medium">{item.label}</Text>
-                <Badge colorScheme="brand" variant="subtle">
-                  {item.value}
-                </Badge>
-              </HStack>
-              <Text fontSize="sm" color="subtle">
-                {item.detail}
-              </Text>
-              {index < growthTimeline.length - 1 ? (
-                <Divider borderColor="ink.100" />
-              ) : null}
-            </Stack>
-          ))}
-        </Stack>
-      </SectionCard>
-    </SimpleGrid>
-  </PageShell>
-);
+        <SectionCard
+          title={t("pages:insights.momentumSignals.title")}
+          description={t("pages:insights.momentumSignals.description")}
+          icon="shield"
+        >
+          <Stack spacing={4}>
+            {MOMENTUM_SIGNALS.map((item, index) => (
+              <Stack key={item.labelKey} spacing={2}>
+                <HStack justify="space-between" align="center">
+                  <Text fontWeight="medium">{t(`pages:${item.labelKey}`)}</Text>
+                  <Badge colorScheme="brand" variant="subtle">
+                    {item.value}
+                  </Badge>
+                </HStack>
+                <Text fontSize="sm" color="subtle">
+                  {t(`pages:${item.detailKey}`)}
+                </Text>
+                {index < MOMENTUM_SIGNALS.length - 1 ? <Divider borderColor="ink.100" /> : null}
+              </Stack>
+            ))}
+          </Stack>
+        </SectionCard>
+      </SimpleGrid>
+    </PageShell>
+  );
+};

@@ -15,13 +15,14 @@ import {
   Textarea,
 } from "@chakra-ui/react";
 import { useState } from "react";
+import { useTranslation } from "react-i18next";
 
 import type { CopySuggestion, ImageStyleOptions } from "../types";
 
-const aspectRatioOptions = [
-  { label: "1:1 Square", value: "1:1" },
-  { label: "4:5 Portrait", value: "4:5" },
-  { label: "16:9 Widescreen", value: "16:9" },
+const ASPECT_RATIO_OPTIONS = [
+  { value: "1:1", labelKey: "copyWorkflow.imageForm.aspectRatio.square" },
+  { value: "4:5", labelKey: "copyWorkflow.imageForm.aspectRatio.portrait" },
+  { value: "16:9", labelKey: "copyWorkflow.imageForm.aspectRatio.widescreen" },
 ];
 
 const parsePalette = (value: string): string[] | undefined => {
@@ -50,9 +51,11 @@ export const ImageConfirmationStep = ({
   isLoading = false,
   error,
 }: ImageConfirmationStepProps) => {
-  const [palette, setPalette] = useState("soft lilac, dawn peach");
-  const [medium, setMedium] = useState("Film photography");
-  const [mood, setMood] = useState("Dreamy optimism");
+  const { t } = useTranslation("features");
+
+  const [palette, setPalette] = useState(() => t("copyWorkflow.imageForm.defaults.palette"));
+  const [medium, setMedium] = useState(() => t("copyWorkflow.imageForm.defaults.medium"));
+  const [mood, setMood] = useState(() => t("copyWorkflow.imageForm.defaults.mood"));
   const [aspectRatio, setAspectRatio] = useState("4:5");
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
@@ -89,57 +92,57 @@ export const ImageConfirmationStep = ({
     <Box as="form" onSubmit={handleSubmit}>
       <Stack spacing={4}>
         <Stack spacing={1}>
-          <Text fontWeight="semibold">Confirm copy direction</Text>
+          <Text fontWeight="semibold">{t("copyWorkflow.imageForm.title")}</Text>
           <Text fontSize="sm" color="subtle">
             {selectedCopy
-              ? "Fine-tune visual style before generating the image."
-              : "Select a copy variant to continue."}
+              ? t("copyWorkflow.imageForm.subtitle.ready")
+              : t("copyWorkflow.imageForm.subtitle.empty")}
           </Text>
         </Stack>
 
         <Textarea
           value={selectedCopy?.text ?? ""}
           isReadOnly
-          placeholder="Selected copy will appear here"
+          placeholder={t("copyWorkflow.imageForm.copyPlaceholder")}
           rows={4}
         />
 
         <Stack spacing={4}>
           <FormControl>
-            <FormLabel>Palette</FormLabel>
+            <FormLabel>{t("copyWorkflow.imageForm.fields.palette.label")}</FormLabel>
             <Input
               value={palette}
               onChange={(event) => setPalette(event.target.value)}
-              placeholder="comma-separated colors"
+              placeholder={t("copyWorkflow.imageForm.fields.palette.placeholder")}
             />
-            <FormHelperText>Helps nudge the visual mood (max 8 colours).</FormHelperText>
+            <FormHelperText>{t("copyWorkflow.imageForm.fields.palette.helper")}</FormHelperText>
           </FormControl>
 
           <HStack spacing={4} align="flex-start" flexWrap="wrap">
             <FormControl flex="1" minW={{ base: "100%", md: "220px" }}>
-              <FormLabel>Medium</FormLabel>
+              <FormLabel>{t("copyWorkflow.imageForm.fields.medium.label")}</FormLabel>
               <Input
                 value={medium}
                 onChange={(event) => setMedium(event.target.value)}
-                placeholder="e.g. Soft illustration"
+                placeholder={t("copyWorkflow.imageForm.fields.medium.placeholder")}
               />
             </FormControl>
 
             <FormControl flex="1" minW={{ base: "100%", md: "220px" }}>
-              <FormLabel>Mood</FormLabel>
+              <FormLabel>{t("copyWorkflow.imageForm.fields.mood.label")}</FormLabel>
               <Input
                 value={mood}
                 onChange={(event) => setMood(event.target.value)}
-                placeholder="e.g. Cozy minimalism"
+                placeholder={t("copyWorkflow.imageForm.fields.mood.placeholder")}
               />
             </FormControl>
 
             <FormControl flex="1" minW={{ base: "100%", md: "220px" }}>
-              <FormLabel>Aspect ratio</FormLabel>
+              <FormLabel>{t("copyWorkflow.imageForm.fields.aspectRatio.label")}</FormLabel>
               <Select value={aspectRatio} onChange={(event) => setAspectRatio(event.target.value)}>
-                {aspectRatioOptions.map((option) => (
+                {ASPECT_RATIO_OPTIONS.map((option) => (
                   <option key={option.value} value={option.value}>
-                    {option.label}
+                    {t(`features:${option.labelKey}`)}
                   </option>
                 ))}
               </Select>
@@ -156,7 +159,9 @@ export const ImageConfirmationStep = ({
 
         <HStack justify="space-between" align="center">
           <Text fontSize="sm" color="subtle">
-            {providerName ? `Images will be generated by ${providerName}` : "Image provider active"}
+            {providerName
+              ? t("copyWorkflow.imageForm.providerHint", { provider: providerName })
+              : t("copyWorkflow.imageForm.providerFallback")}
           </Text>
           <Button
             type="submit"
@@ -164,7 +169,7 @@ export const ImageConfirmationStep = ({
             isDisabled={isDisabled || !selectedCopy}
             isLoading={isLoading}
           >
-            Generate image
+            {t("copyWorkflow.imageForm.actions.generate")}
           </Button>
         </HStack>
       </Stack>

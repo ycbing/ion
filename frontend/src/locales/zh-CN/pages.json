@@ -1,0 +1,287 @@
+{
+  "dashboard": {
+    "title": "创意总览",
+    "subtitle": "策划产品故事、协调创作者活动，并在每次小红书发布前预览素材。",
+    "actions": {
+      "inspire": "激发灵感",
+      "newConcept": "新建创意"
+    },
+    "copyToImage": {
+      "title": "文案到图像工作室",
+      "description": "填写主题，挑选最合适的 AI 文案，再一次性生成主视觉。"
+    },
+    "launchNarrative": {
+      "title": "发布叙事规划",
+      "description": "定义情感钩子、语调与分发节奏，为下一次焦点活动预热。",
+      "actions": {
+        "browseTemplates": "浏览模板"
+      },
+      "form": {
+        "headline": {
+          "label": "活动主标题",
+          "placeholder": "用晨曦色调勾勒周末旅行系列"
+        },
+        "primaryChannel": {
+          "label": "主要渠道",
+          "placeholder": "请选择渠道",
+          "options": {
+            "xiaohongshu": "小红书",
+            "douyin": "抖音",
+            "weibo": "微博",
+            "instagram": "Instagram"
+          }
+        },
+        "tone": {
+          "label": "语调"
+        },
+        "storyDirection": {
+          "label": "故事方向",
+          "placeholder": "说明想要的内容钩子、主视觉与创作者号召重点。"
+        }
+      }
+    },
+    "activeProviders": {
+      "title": "启用的供应商",
+      "description": "连接中的模型用于创意生成与情感校准。",
+      "domains": {
+        "text": "文本生成",
+        "image": "图像生成"
+      },
+      "activeLabel": "当前启用：{{provider}}",
+      "driver": "驱动：{{driver}}",
+      "missing": "缺少：{{credentials}}"
+    },
+    "highlights": {
+      "creatorReach": {
+        "label": "创作者触达",
+        "change": "较上周提升 12.4%"
+      },
+      "draftsInReview": {
+        "label": "审阅中的草稿",
+        "change": "今日可交付 3 条"
+      },
+      "launchVelocity": {
+        "label": "发布节奏",
+        "change": "领先目标进度"
+      }
+    },
+    "creatorSpotlights": {
+      "title": "创作者焦点",
+      "description": "关注核心讲述者以及他们的下一个交付节点。",
+      "items": {
+        "avery": {
+          "description": "日出护肤 vlog • 明日到期"
+        },
+        "jun": {
+          "description": "城市咖啡影像日记 • 目前为草稿"
+        },
+        "mina": {
+          "description": "胶囊衣橱轮播 • 审核中"
+        }
+      }
+    },
+    "inspirationFeed": {
+      "title": "灵感流",
+      "description": "细分市场正流行的片段，可保存到情绪板或直接加入简报。",
+      "actions": {
+        "addToMoodboard": "添加到灵感板"
+      },
+      "snippets": {
+        "weekendEscape": "周末出行行李清单",
+        "sunriseSkincare": "日出徒步前的清晨护肤",
+        "mutedBlushPalette": "咖啡巡游的低饱和腮红色调"
+      },
+      "helperText": "点击查看推荐视角与建议搭档的创作者。"
+    }
+  },
+  "campaigns": {
+    "title": "活动策划",
+    "subtitle": "掌握每次发布从简报到上线的全流程，让创作者小组保持同频。",
+    "actions": {
+      "calendarView": "日历视图",
+      "newLaunch": "新建发布"
+    },
+    "upcomingLaunches": {
+      "title": "即将上线",
+      "description": "监控节奏、阶段与关注点，把握下一波故事热度。",
+      "focusLabel": "重点：{{focus}}",
+      "progressLabel": "{{value}}% 已就绪",
+      "items": {
+        "midnightMarket": {
+          "name": "午夜市集快闪",
+          "status": "制作中",
+          "focus": "街头小吃 × 护肤灵感",
+          "launchDate": "12 月 8 日"
+        },
+        "holidayGifting": {
+          "name": "红色假日礼盒",
+          "status": "简报已完成",
+          "focus": "暖调胶囊时刻",
+          "launchDate": "12 月 15 日"
+        },
+        "snowboundEssentials": {
+          "name": "雪地出行必备",
+          "status": "即将启动",
+          "focus": "分层旅行单品",
+          "launchDate": "12 月 22 日"
+        }
+      }
+    },
+    "creatorPods": {
+      "title": "创作者小组",
+      "description": "围绕每次发布协同冲刺的小队。",
+      "items": {
+        "glowLab": {
+          "name": "Glow Lab",
+          "status": "最后润色"
+        },
+        "citySketchers": {
+          "name": "City Sketchers",
+          "status": "撰写中"
+        },
+        "weekendDrifters": {
+          "name": "Weekend Drifters",
+          "status": "准备发布"
+        }
+      }
+    },
+    "workflowAutomation": {
+      "title": "流程自动化",
+      "description": "预检让每个品牌故事都保持在轨。",
+      "actions": {
+        "notificationRules": "通知规则"
+      },
+      "items": {
+        "toneCheck": {
+          "title": "语调校对",
+          "description": "在最终交付前自动检查草稿是否符合“温暖友好”的语调。"
+        },
+        "trendSync": {
+          "title": "趋势同步",
+          "description": "推送与你活动主题相关的小红书热门话题集。"
+        },
+        "escalation": {
+          "title": "提醒烘托",
+          "description": "草稿超过 36 小时未处理时通知审批人。"
+        }
+      }
+    }
+  },
+  "insights": {
+    "title": "活动洞察",
+    "subtitle": "洞察社区情绪，优化创作者简报，并加倍投入表现最好的叙事。",
+    "actions": {
+      "exportReport": "导出报告",
+      "createDashboard": "创建仪表盘"
+    },
+    "summaryStats": {
+      "weeklyReach": {
+        "label": "每周触达",
+        "help": "较上周提升 18.2%"
+      },
+      "engagementDepth": {
+        "label": "互动深度",
+        "help": "故事类视频平均观看时长"
+      },
+      "saveToShare": {
+        "label": "收藏转分享比",
+        "help": "主视觉帖子收藏与分享对比"
+      }
+    },
+    "sentimentPulse": {
+      "title": "情绪脉搏",
+      "description": "了解社区对当前话题在小红书上的反馈。"
+    },
+    "sentiment": {
+      "positive": "正向",
+      "neutral": "中性",
+      "constructive": "建设性意见"
+    },
+    "momentumSignals": {
+      "title": "动量信号",
+      "description": "基于表现数据的亮点与优化方向。"
+    },
+    "momentum": {
+      "savedMoodboards": {
+        "label": "收藏的灵感板",
+        "detail": "创作者收藏更多产品故事参考"
+      },
+      "carouselCompletion": {
+        "label": "轮播完成率",
+        "detail": "本周教程型内容的发布转化率"
+      },
+      "averageSaveRate": {
+        "label": "平均收藏率",
+        "detail": "对比同期生活方式类基准"
+      }
+    }
+  },
+  "settings": {
+    "title": "工作区设置",
+    "subtitle": "让创意操作系统符合品牌节奏，并保持通知流简洁有序。",
+    "actions": {
+      "save": "保存更改"
+    },
+    "workspaceIdentity": {
+      "title": "工作区信息",
+      "description": "设置创作者在简报与仪表中看到的基础信息。",
+      "form": {
+        "brandName": {
+          "label": "品牌工作室名称",
+          "placeholder": "红工作室"
+        },
+        "contactEmail": {
+          "label": "联系邮箱",
+          "placeholder": "hello@redstudio.fake",
+          "helper": "用于自动发送简报。"
+        },
+        "defaultTone": {
+          "label": "默认叙事语调"
+        },
+        "brandPillars": {
+          "label": "品牌支柱",
+          "placeholder": "记录应贯穿创意的场景、关键词与情绪。"
+        }
+      }
+    },
+    "notificationCadence": {
+      "title": "通知频率",
+      "description": "决定团队如何获知创作者更新与情绪变化。",
+      "cadenceOptions": {
+        "daily": "每日",
+        "alternate": "隔日",
+        "twice": "每周两次",
+        "weekly": "每周一次"
+      },
+      "form": {
+        "digestCadence": {
+          "label": "摘要频率",
+          "placeholder": "请选择频率",
+          "helper": "汇总创作者动态与表现。"
+        },
+        "instantAlerts": {
+          "label": "即时提醒",
+          "helper": "针对创作者反馈与被标记的草稿推送通知。"
+        },
+        "providerHealth": {
+          "label": "供应商健康状态",
+          "helper": "AI 供应商变慢或不可用时提醒我。"
+        },
+        "weeklyInspiration": {
+          "label": "每周灵感包",
+          "helper": "每周一接收一组趋势提示与模板。"
+        }
+      }
+    },
+    "languagePreferences": {
+      "title": "语言设置",
+      "description": "切换界面语言以适配团队协作。",
+      "form": {
+        "interfaceLanguage": {
+          "label": "界面语言"
+        }
+      },
+      "helperText": "选择后会立即生效并在下次登录时自动应用。"
+    }
+  }
+}
