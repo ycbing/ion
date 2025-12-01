@@ -21,4 +21,4 @@ tmp/
 .DS_Store
 
 # Vite cache
-content-generator/frontend/.vite
+frontend/.vite

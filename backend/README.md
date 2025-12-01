@@ -5,7 +5,7 @@ This package exposes the API surface for the content generator prototype. The se
 ## Running the server
 
 ```bash
-npm run dev --workspace content-generator/backend
+npm run dev --workspace backend
 ```
 
 The server listens on `settings.server.port` (default `4000`) and exposes a simple health probe at `GET /health`.
@@ -212,5 +212,5 @@ Sample environment variables are documented in `.env.example`. The built-in prov
 Run the backend unit tests with:
 
 ```bash
-npm run test --workspace content-generator/backend
+npm run test --workspace backend
 ```
