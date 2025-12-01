@@ -1,5 +1,5 @@
 {
-  "name": "content-generator-monorepo",
+  "name": "content-generator",
   "version": "0.1.0",
   "private": true,
   "engines": {
@@ -7,11 +7,11 @@
     "npm": ">=9.0.0"
   },
   "workspaces": [
-    "content-generator/frontend",
-    "content-generator/backend"
+    "frontend",
+    "backend"
   ],
   "scripts": {
-    "dev": "concurrently \"npm run dev --workspace content-generator/backend\" \"npm run dev --workspace content-generator/frontend\"",
+    "dev": "concurrently \"npm run dev --workspace backend\" \"npm run dev --workspace frontend\"",
     "build": "npm run build --workspaces",
     "lint": "npm run lint --workspaces",
     "format": "npm run format --workspaces --if-present",

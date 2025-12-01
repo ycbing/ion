@@ -1,149 +1,129 @@
-# Content Generator Monorepo
+# Content Generator
 
-This repository now ships with a monorepo-oriented workspace located in `content-generator/` that contains both frontend and backend packages for building AI-assisted content generation tooling. The original UI demos (carousel, progressive-image, etc.) remain available alongside the new workspace.
+Content Generator is a full-stack workspace for building AI-assisted copywriting and image generation tooling. The repository is split into two packages: a TypeScript Express backend that brokers provider APIs and a Vite + React frontend that delivers the operator experience.
 
-## Prerequisites
+## Project structure
+
+```
+.
+├── backend/            # Express + TypeScript API
+│   ├── src/
+│   ├── config/
+│   ├── package.json
+│   └── tsconfig*.json
+├── frontend/           # Vite + React dashboard
+│   ├── src/
+│   ├── package.json
+│   └── vite.config.ts
+├── .env.example        # Sample environment variables shared by both packages
+├── package.json        # Workspace configuration and shared scripts
+└── tsconfig.base.json  # Base TypeScript configuration extended by each package
+```
+
+## Requirements
 
 - Node.js **20.10.0** or newer
 - npm **9.x** or newer (ships with Node 20)
 
-> Install the required Node.js version via [nvm](https://github.com/nvm-sh/nvm) or your preferred version manager before continuing.
+Use [nvm](https://github.com/nvm-sh/nvm) or your preferred version manager to install the required Node.js version before continuing.
 
-## Getting Started
+## Getting started
 
-1. Install all dependencies for every workspace from the repository root:
+1. Install all workspace dependencies from the repository root:
 
    ```bash
    npm install
    ```
 
-2. Copy the example environment file and update it with your keys and URLs:
+2. Copy the example environment file and tailor the values to your setup:
 
    ```bash
    cp .env.example .env
    ```
 
-3. Start the backend API:
+3. Start both the backend API and the frontend application concurrently:
 
    ```bash
-   npm run dev --workspace content-generator/backend
+   npm run dev
    ```
 
-4. In a second terminal, start the frontend application:
+   The command above spawns `npm run dev --workspace backend` and `npm run dev --workspace frontend` via `concurrently`.
 
-   ```bash
-   npm run dev --workspace content-generator/frontend
-   ```
+4. Visit the dashboard at [http://localhost:5173](http://localhost:5173). The frontend proxies API calls to the backend at [http://localhost:4000](http://localhost:4000) by default.
 
-Alternatively, run both concurrently from the root:
+### Running packages individually
 
-```bash
-npm run dev
-```
+- Backend in watch mode: `npm run dev --workspace backend`
+- Frontend in watch mode: `npm run dev --workspace frontend`
 
-## Manual QA: Copy-to-image workflow
+### Building for production
 
-The dashboard now exposes an end-to-end “copy-to-image” studio powered by the backend API. To exercise the flow manually:
-
-1. Follow the steps above (or run `npm run dev` from the repo root) so that both the Express API (default `http://localhost:4000`) and the Vite frontend (default `http://localhost:5173`) are running.
-2. Visit `http://localhost:5173` in your browser and land on the Dashboard.
-3. Inside the **Copy-to-image studio** card:
-   - Enter a topic, optional creative direction, tone, audience, and keywords.
-   - Click **Generate copy ideas** to call `POST /api/copies` and receive AI-written variants.
-   - Edit or select the variant you prefer.
-4. Adjust the visual style inputs (palette, medium, mood, aspect ratio) and click **Generate image**. This triggers `POST /api/images` and streams the resulting asset into the gallery.
-5. Use the **Manage providers** button to open the settings drawer, switch the active text or image provider, and re-run the steps above to confirm the updated vendor is used.
-6. Use the gallery actions to download the generated image or copy/share the asset URL.
-
-## Workspace Layout
-
-```
-content-generator/
-├── backend/          # Express + TypeScript API
-│   ├── src/
-│   │   ├── env.ts
-│   │   ├── index.ts
-│   │   └── providers/
-│   │       ├── configs/
-│   │       │   ├── anthropic.ts
-│   │       │   └── openai.ts
-│   │       └── index.ts
-│   ├── package.json
-│   └── tsconfig*.json
-├── frontend/         # Vite + React frontend shell
-│   ├── src/
-│   │   ├── App.tsx
-│   │   └── main.tsx
-│   ├── package.json
-│   └── vite.config.ts
-└── ...
-```
-
-## Shared Tooling and Scripts
-
-The repository uses [npm workspaces](https://docs.npmjs.com/cli/v10/using-npm/workspaces) to manage packages. The root `package.json` exposes shared scripts that proxy into each workspace:
-
-| Script | Description |
-| ------ | ----------- |
-| `npm run dev` | Starts both backend and frontend in watch mode using `concurrently`. |
-| `npm run build` | Runs `build` in every workspace sequentially. |
-| `npm run lint` | Runs the TypeScript compiler in `--noEmit` mode for type-checking in each workspace. |
-| `npm run dev --workspace <path>` | Targets a single workspace (frontend or backend).
-
-## Environment Variables
-
-All configurable values live in `.env` at the repository root (see `.env.example`). The most important keys are:
-
-| Variable | Description |
-| -------- | ----------- |
-| `CONTENT_BACKEND_PORT` | Port the Express API listens on (default `4000`). |
-| `CONTENT_FRONTEND_URL` | Base URL the frontend uses to talk to the API (default `http://localhost:5173`). |
-| `VITE_API_BASE_URL` | Frontend environment variable that points to the backend API (default `http://localhost:4000`). |
-| `AI_PROVIDERS` | Comma-separated list of enabled providers (`openai,anthropic`). |
-| `OPENAI_API_KEY`, `ANTHROPIC_API_KEY` | Secrets used when calling respective providers. |
-| `OPENAI_API_BASE`, `ANTHROPIC_API_BASE` | Override default base URLs when pointing at self-hosted gateways. |
-| `OPENAI_MODEL`, `ANTHROPIC_MODEL` | Default model identifiers used by the backend when formatting requests. |
-
-## Provider Configuration Structure
-
-Provider integrations live in `content-generator/backend/src/providers/`. Each provider exports a `ProviderConfig` object inside `src/providers/configs/<provider>.ts` describing how to connect to the vendor. The registry (`src/providers/index.ts`) loads every config and exposes helper methods for resolving providers at runtime.
-
-To add a new provider:
-
-1. Create a new config file under `src/providers/configs/` exporting a `ProviderConfig`.
-2. Append the new config to the array exported in `src/providers/index.ts`.
-3. Add any required environment variables to `.env.example` and document them in this README.
-
-## Frontend
-
-The frontend is a Vite + React + TypeScript application styled with Chakra UI and a custom Xiaohongshu-inspired theme. Routing is handled by React Router and data fetching/state management by React Query with an Axios client that reads its base URL from `VITE_API_BASE_URL`. Shared layout primitives (`PageShell`, `SectionCard`) and form elements provide a consistent design language across screens.
-
-Common scripts:
+Run the build task for both packages:
 
 ```bash
-npm run dev --workspace content-generator/frontend
-npm run build --workspace content-generator/frontend
-npm run lint --workspace content-generator/frontend
-npm run test --workspace content-generator/frontend
+npm run build
 ```
 
-## Backend
+Artifacts are emitted into `backend/dist/` and `frontend/dist/` respectively.
 
-The backend is an Express server written in TypeScript. It exposes a health endpoint and a simple provider listing stub to demonstrate how provider metadata can be surfaced to the frontend.
+## Environment variables
 
-Common scripts:
+The backend and frontend share a `.env` file at the repository root. Key variables include:
+
+| Variable | Description | Default |
+| -------- | ----------- | ------- |
+| `CONTENT_BACKEND_PORT` | Port used by the Express server. | `4000` |
+| `CONTENT_FRONTEND_URL` | Public URL of the frontend (used for CORS). | `http://localhost:5173` |
+| `VITE_API_BASE_URL` | Base URL the frontend uses for API requests. | `http://localhost:4000` |
+| `OPENAI_API_KEY` | Credential for the OpenAI text provider. | _unset_ |
+| `STABILITY_API_KEY` | Credential for the Stability image provider. | _unset_ |
+
+Refer to `backend/config/*.json` for additional provider metadata and tweak values as needed.
+
+## Backend overview
+
+The backend lives in the `backend/` workspace. It exposes REST endpoints for:
+
+- `POST /api/copies` – generate marketing copy variants.
+- `POST /api/images` – produce illustrative assets based on copy and styling inputs.
+- `GET /api/providers` – inspect registered providers and their credential status.
+
+Requests are validated with [Zod](https://github.com/colinhacks/zod), configuration is loaded from the `config/` directory with `dotenv` overrides, and providers are resolved dynamically so you can plug in additional vendors without code changes.
+
+Useful scripts:
 
 ```bash
-npm run dev --workspace content-generator/backend
-npm run build --workspace content-generator/backend
-npm run lint --workspace content-generator/backend
-npm run start --workspace content-generator/backend
+npm run dev --workspace backend      # Start the API with hot reloading
+npm run build --workspace backend    # Type-check and emit compiled output
+npm run test --workspace backend     # Execute Vitest suites
 ```
 
-## Additional Notes
+## Frontend overview
 
-- `.editorconfig` defines consistent formatting across editors.
-- `.gitignore` filters Node-specific artifacts such as `node_modules/`, build outputs, and environment files.
-- `tsconfig.base.json` centralises TypeScript compiler settings shared across workspaces.
+The frontend lives in the `frontend/` workspace. It is a Vite + React application styled with Chakra UI and driven by TanStack Query for data fetching. API calls are made through a shared Axios instance that reads `VITE_API_BASE_URL` from the root `.env` file.
 
-Feel free to explore the existing demo folders for standalone JavaScript samples unrelated to the new monorepo workspace.
+Useful scripts:
+
+```bash
+npm run dev --workspace frontend     # Start the Vite development server
+npm run build --workspace frontend   # Create a production build
+npm run lint --workspace frontend    # Run ESLint with TypeScript support
+npm run test --workspace frontend    # Execute Jest + Testing Library suites
+```
+
+## Testing & quality
+
+From the repository root you can run aggregate commands across all workspaces:
+
+- `npm run lint` – Type-check / lint each package.
+- `npm run format` – Run any configured formatting tasks.
+- `npm run test` – Execute test suites that are present in each workspace.
+
+Individual package scripts can also be invoked directly via `--workspace` as shown above.
+
+## Deployment notes
+
+- The backend expects provider credentials (`OPENAI_API_KEY`, `STABILITY_API_KEY`, etc.) to be available in the environment where it runs.
+- The frontend build embeds `VITE_*` variables at compile time. Ensure `VITE_API_BASE_URL` points to the deployed backend before running `npm run build --workspace frontend` for production use.
+
+Happy shipping!
