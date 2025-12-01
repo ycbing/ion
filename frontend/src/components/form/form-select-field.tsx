@@ -8,6 +8,7 @@ import {
   SelectProps,
 } from "@chakra-ui/react";
 import { forwardRef, useId } from "react";
+import { useTranslation } from "react-i18next";
 
 type FormSelectFieldOption = {
   label: string;
@@ -24,6 +25,7 @@ type FormSelectFieldProps = SelectProps & {
 
 export const FormSelectField = forwardRef<HTMLSelectElement, FormSelectFieldProps>(
   ({ label, options, helperText, error, optional, id, placeholder, ...rest }, ref) => {
+    const { t } = useTranslation("common");
     const generatedId = useId();
     const fieldId = id ?? generatedId;
 
@@ -33,11 +35,16 @@ export const FormSelectField = forwardRef<HTMLSelectElement, FormSelectFieldProp
           {label}
           {optional ? (
             <Badge ml={2} colorScheme="brand" variant="subtle">
-              Optional
+              {t("form.optional")}
             </Badge>
           ) : null}
         </FormLabel>
-        <Select id={fieldId} ref={ref} placeholder={placeholder ?? "Select option"} {...rest}>
+        <Select
+          id={fieldId}
+          ref={ref}
+          placeholder={placeholder ?? t("form.selectPlaceholder")}
+          {...rest}
+        >
           {options.map((option) => (
             <option key={option.value} value={option.value}>
               {option.label}

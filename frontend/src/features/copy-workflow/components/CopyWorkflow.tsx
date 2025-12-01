@@ -7,6 +7,7 @@ import {
   useToast,
 } from "@chakra-ui/react";
 import { useMemo, useRef, useState } from "react";
+import { useTranslation } from "react-i18next";
 
 import { AppIcon } from "@/components/icons";
 import {
@@ -31,12 +32,12 @@ import type {
   WorkflowImageRecord,
 } from "../types";
 
-const getErrorMessage = (error: unknown): string => {
+const getErrorMessage = (error: unknown, fallback: string): string => {
   if (error instanceof ApiError || error instanceof Error) {
     return error.message;
   }
 
-  return "Something went wrong. Please try again.";
+  return fallback;
 };
 
 const findProviderLabel = (overview: ProviderOverview, domain: "text" | "image", name?: string) => {
@@ -46,6 +47,7 @@ const findProviderLabel = (overview: ProviderOverview, domain: "text" | "image",
 };
 
 export const CopyWorkflow = () => {
+  const { t } = useTranslation(["features", "common"]);
   const toast = useToast();
   const settingsDisclosure = useDisclosure();
   const { data: providerOverviewData } = useProviderOverview();
@@ -68,6 +70,8 @@ export const CopyWorkflow = () => {
     [copies, selectedCopyId],
   );
 
+  const fallbackErrorMessage = t("features:copyWorkflow.errors.generic");
+
   const handleGenerateCopy = (payload: GenerateCopyPayload) => {
     setHasRequestedCopy(true);
     setCopies([]);
@@ -83,10 +87,11 @@ export const CopyWorkflow = () => {
         setCopyProvider(result.provider);
         setSelectedCopyId(result.copies[0]?.id ?? null);
         toast({
-          title: "Copy direction ready",
-          description: `${result.metadata.deliveredVariants} variant${
-            result.metadata.deliveredVariants === 1 ? "" : "s"
-          } created by ${findProviderLabel(providerOverview, "text", result.provider)}.`,
+          title: t("features:copyWorkflow.toasts.copyReady.title"),
+          description: t("features:copyWorkflow.toasts.copyReady.description", {
+            count: result.metadata.deliveredVariants,
+            provider: findProviderLabel(providerOverview, "text", result.provider),
+          }),
           status: "success",
           duration: 3500,
           isClosable: true,
@@ -94,8 +99,8 @@ export const CopyWorkflow = () => {
       },
       onError: (error) => {
         toast({
-          title: "Copy generation failed",
-          description: getErrorMessage(error),
+          title: t("features:copyWorkflow.toasts.copyFailed.title"),
+          description: getErrorMessage(error, fallbackErrorMessage),
           status: "error",
           duration: 4000,
           isClosable: true,
@@ -137,8 +142,10 @@ export const CopyWorkflow = () => {
 
         setImages((previous) => [record, ...previous]);
         toast({
-          title: "Image ready",
-          description: `Generated with ${findProviderLabel(providerOverview, "image", result.provider)}.`,
+          title: t("features:copyWorkflow.toasts.imageReady.title"),
+          description: t("features:copyWorkflow.toasts.imageReady.description", {
+            provider: findProviderLabel(providerOverview, "image", result.provider),
+          }),
           status: "success",
           duration: 3500,
           isClosable: true,
@@ -146,8 +153,8 @@ export const CopyWorkflow = () => {
       },
       onError: (error) => {
         toast({
-          title: "Image generation failed",
-          description: getErrorMessage(error),
+          title: t("features:copyWorkflow.toasts.imageFailed.title"),
+          description: getErrorMessage(error, fallbackErrorMessage),
           status: "error",
           duration: 4000,
           isClosable: true,
@@ -160,8 +167,8 @@ export const CopyWorkflow = () => {
     try {
       await updateProvidersMutation.mutateAsync(payload);
       toast({
-        title: "Providers updated",
-        description: "Future generations will use the new configuration.",
+        title: t("features:copyWorkflow.toasts.providersUpdated.title"),
+        description: t("features:copyWorkflow.toasts.providersUpdated.description"),
         status: "success",
         duration: 3000,
         isClosable: true,
@@ -169,8 +176,8 @@ export const CopyWorkflow = () => {
       settingsDisclosure.onClose();
     } catch (error) {
       toast({
-        title: "Unable to update providers",
-        description: getErrorMessage(error),
+        title: t("features:copyWorkflow.toasts.providersFailed.title"),
+        description: getErrorMessage(error, fallbackErrorMessage),
         status: "error",
         duration: 4000,
         isClosable: true,
@@ -185,9 +192,12 @@ export const CopyWorkflow = () => {
     <Stack spacing={8}>
       <HStack justify="space-between" align="flex-start" flexWrap="wrap" spacing={4}>
         <Stack spacing={1}>
-          <Text fontWeight="semibold">Active providers</Text>
+          <Text fontWeight="semibold">{t("features:copyWorkflow.activeProviders.title")}</Text>
           <Text fontSize="sm" color="subtle">
-            Text: {textProviderLabel} · Image: {imageProviderLabel}
+            {t("features:copyWorkflow.activeProviders.summary", {
+              textProvider: textProviderLabel,
+              imageProvider: imageProviderLabel,
+            })}
           </Text>
         </Stack>
         <Button
@@ -196,7 +206,7 @@ export const CopyWorkflow = () => {
           leftIcon={<AppIcon name="settings" boxSize={4} />}
           onClick={settingsDisclosure.onOpen}
         >
-          Manage providers
+          {t("features:copyWorkflow.activeProviders.manageButton")}
         </Button>
       </HStack>
 
@@ -210,7 +220,7 @@ export const CopyWorkflow = () => {
         onSelect={setSelectedCopyId}
         onCopyChange={handleCopyChange}
         isLoading={copyMutation.isPending}
-        error={copyMutation.isError ? getErrorMessage(copyMutation.error) : null}
+        error={copyMutation.isError ? getErrorMessage(copyMutation.error, fallbackErrorMessage) : null}
         onRetry={handleRetryCopy}
         hasRequested={hasRequestedCopy}
       />
@@ -221,7 +231,7 @@ export const CopyWorkflow = () => {
         providerName={imageProviderLabel}
         isDisabled={copyMutation.isPending || !selectedCopy}
         isLoading={imageMutation.isPending}
-        error={imageMutation.isError ? getErrorMessage(imageMutation.error) : null}
+        error={imageMutation.isError ? getErrorMessage(imageMutation.error, fallbackErrorMessage) : null}
       />
 
       <GeneratedImagesGallery images={images} />

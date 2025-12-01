@@ -1,0 +1,287 @@
+{
+  "dashboard": {
+    "title": "Creative dashboard",
+    "subtitle": "Curate product stories, align creator campaigns, and preview assets before each Xiaohongshu drop.",
+    "actions": {
+      "inspire": "Inspire me",
+      "newConcept": "New concept"
+    },
+    "copyToImage": {
+      "title": "Copy-to-image studio",
+      "description": "Brief a topic, pick your favourite AI copy, then render hero visuals in one flow."
+    },
+    "launchNarrative": {
+      "title": "Launch narrative",
+      "description": "Define the emotional hook, tone, and distribution cadence for your next spotlight.",
+      "actions": {
+        "browseTemplates": "Browse templates"
+      },
+      "form": {
+        "headline": {
+          "label": "Campaign headline",
+          "placeholder": "Tease the weekender drop with dawn-toned nostalgia"
+        },
+        "primaryChannel": {
+          "label": "Primary channel",
+          "placeholder": "Select a platform",
+          "options": {
+            "xiaohongshu": "Xiaohongshu",
+            "douyin": "Douyin",
+            "weibo": "Weibo",
+            "instagram": "Instagram"
+          }
+        },
+        "tone": {
+          "label": "Tone"
+        },
+        "storyDirection": {
+          "label": "Story direction",
+          "placeholder": "Outline the hook, hero shots, and call-to-action you want creators to riff on."
+        }
+      }
+    },
+    "activeProviders": {
+      "title": "Active providers",
+      "description": "Connected models powering ideation and sentiment checks.",
+      "domains": {
+        "text": "Text generation",
+        "image": "Image generation"
+      },
+      "activeLabel": "Active: {{provider}}",
+      "driver": "Driver: {{driver}}",
+      "missing": "Missing: {{credentials}}"
+    },
+    "highlights": {
+      "creatorReach": {
+        "label": "Creator reach",
+        "change": "+12.4% vs last week"
+      },
+      "draftsInReview": {
+        "label": "Drafts in review",
+        "change": "3 ready today"
+      },
+      "launchVelocity": {
+        "label": "Launch velocity",
+        "change": "Ahead of target"
+      }
+    },
+    "creatorSpotlights": {
+      "title": "Creator spotlights",
+      "description": "Keep tabs on your top storytellers and their next deliverables.",
+      "items": {
+        "avery": {
+          "description": "Sunrise skincare vlog • Due tomorrow"
+        },
+        "jun": {
+          "description": "City café photo diary • Draft present"
+        },
+        "mina": {
+          "description": "Capsule closet carousel • In review"
+        }
+      }
+    },
+    "inspirationFeed": {
+      "title": "Inspiration feed",
+      "description": "Snippets trending within your segment. Save to moodboard or push to a brief.",
+      "actions": {
+        "addToMoodboard": "Add to moodboard"
+      },
+      "snippets": {
+        "weekendEscape": "Weekend escape packing checklist",
+        "sunriseSkincare": "5AM skincare before sunrise hike",
+        "mutedBlushPalette": "Muted blush palette for café hopping"
+      },
+      "helperText": "Tap to view suggested angles and recommended creator pairings."
+    }
+  },
+  "campaigns": {
+    "title": "Campaign planner",
+    "subtitle": "Track every drop from brief to live moment, and keep creator pods aligned on deliverables.",
+    "actions": {
+      "calendarView": "Calendar view",
+      "newLaunch": "New launch"
+    },
+    "upcomingLaunches": {
+      "title": "Upcoming launches",
+      "description": "Monitor velocity, stage, and focus area for the next wave of stories.",
+      "focusLabel": "Focus: {{focus}}",
+      "progressLabel": "{{value}}% ready",
+      "items": {
+        "midnightMarket": {
+          "name": "Midnight market pop-up",
+          "status": "In production",
+          "focus": "Streetfood-meets-skin",
+          "launchDate": "Dec 08"
+        },
+        "holidayGifting": {
+          "name": "Red holiday gifting",
+          "status": "Brief ready",
+          "focus": "Warm capsule moments",
+          "launchDate": "Dec 15"
+        },
+        "snowboundEssentials": {
+          "name": "Snowbound essentials",
+          "status": "Kickoff",
+          "focus": "Layered travel staples",
+          "launchDate": "Dec 22"
+        }
+      }
+    },
+    "creatorPods": {
+      "title": "Creator pods",
+      "description": "Sprint-based groups collaborating on each launch.",
+      "items": {
+        "glowLab": {
+          "name": "Glow Lab",
+          "status": "Final tweaks"
+        },
+        "citySketchers": {
+          "name": "City Sketchers",
+          "status": "Drafting"
+        },
+        "weekendDrifters": {
+          "name": "Weekend Drifters",
+          "status": "Ready to publish"
+        }
+      }
+    },
+    "workflowAutomation": {
+      "title": "Workflow automation",
+      "description": "Pre-flight checks ensure every product story stays on brand.",
+      "actions": {
+        "notificationRules": "Notification rules"
+      },
+      "items": {
+        "toneCheck": {
+          "title": "Tone check",
+          "description": "Auto-review drafts for the \"warm & conversational\" tone before final delivery."
+        },
+        "trendSync": {
+          "title": "Trend sync",
+          "description": "Surface top Xiaohongshu hashtag clusters relevant to your campaign focus."
+        },
+        "escalation": {
+          "title": "Escalation window",
+          "description": "Notify approvers if drafts stay untouched for more than 36 hours."
+        }
+      }
+    }
+  },
+  "insights": {
+    "title": "Campaign insights",
+    "subtitle": "Stay ahead of community sentiment, optimise creator briefs, and double down on high-performing narratives.",
+    "actions": {
+      "exportReport": "Export report",
+      "createDashboard": "Create dashboard"
+    },
+    "summaryStats": {
+      "weeklyReach": {
+        "label": "Weekly reach",
+        "help": "+18.2% vs last week"
+      },
+      "engagementDepth": {
+        "label": "Engagement depth",
+        "help": "Avg. watch time on story-led videos"
+      },
+      "saveToShare": {
+        "label": "Save to share",
+        "help": "Saves vs shares on hero posts"
+      }
+    },
+    "sentimentPulse": {
+      "title": "Sentiment pulse",
+      "description": "How your community feels about current talking points on Xiaohongshu."
+    },
+    "sentiment": {
+      "positive": "Positive",
+      "neutral": "Neutral",
+      "constructive": "Constructive"
+    },
+    "momentumSignals": {
+      "title": "Momentum signals",
+      "description": "Recent wins and areas to optimise based on performance data."
+    },
+    "momentum": {
+      "savedMoodboards": {
+        "label": "Saved moodboards",
+        "detail": "Creators are bookmarking more product storytelling references"
+      },
+      "carouselCompletion": {
+        "label": "Carousel completion",
+        "detail": "Draft-to-publish rate for how-to sequences this week"
+      },
+      "averageSaveRate": {
+        "label": "Avg. save rate",
+        "detail": "Versus lifestyle benchmark for the same period"
+      }
+    }
+  },
+  "settings": {
+    "title": "Workspace settings",
+    "subtitle": "Tailor the creative operating system to your brand and keep your notification flow intentional.",
+    "actions": {
+      "save": "Save changes"
+    },
+    "workspaceIdentity": {
+      "title": "Workspace identity",
+      "description": "Set the baseline information creators see across briefs and dashboards.",
+      "form": {
+        "brandName": {
+          "label": "Brand studio name",
+          "placeholder": "Red Studio"
+        },
+        "contactEmail": {
+          "label": "Contact email",
+          "placeholder": "hello@redstudio.fake",
+          "helper": "Used for automated brief delivery."
+        },
+        "defaultTone": {
+          "label": "Default narrative tone"
+        },
+        "brandPillars": {
+          "label": "Brand pillars",
+          "placeholder": "Outline the moments, keywords, and emotions that should guide creative."
+        }
+      }
+    },
+    "notificationCadence": {
+      "title": "Notification cadence",
+      "description": "Decide how your team hears about creator updates and sentiment shifts.",
+      "cadenceOptions": {
+        "daily": "Daily",
+        "alternate": "Every other day",
+        "twice": "Twice a week",
+        "weekly": "Weekly"
+      },
+      "form": {
+        "digestCadence": {
+          "label": "Digest cadence",
+          "placeholder": "Select frequency",
+          "helper": "Summaries of creator activity and performance."
+        },
+        "instantAlerts": {
+          "label": "Instant alerts",
+          "helper": "Send push notifications for creator feedback and flagged drafts."
+        },
+        "providerHealth": {
+          "label": "Provider health updates",
+          "helper": "Notify me if an AI provider is slow or unavailable."
+        },
+        "weeklyInspiration": {
+          "label": "Weekly inspiration pack",
+          "helper": "Receive a curated set of trending prompts and templates each Monday."
+        }
+      }
+    },
+    "languagePreferences": {
+      "title": "Language preferences",
+      "description": "Switch the interface language to fit your team's workflow.",
+      "form": {
+        "interfaceLanguage": {
+          "label": "Interface language"
+        }
+      },
+      "helperText": "Changes apply immediately and persist for your next visit."
+    }
+  }
+}

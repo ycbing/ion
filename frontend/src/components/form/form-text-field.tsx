@@ -8,6 +8,7 @@ import {
   InputProps,
 } from "@chakra-ui/react";
 import { forwardRef, useId } from "react";
+import { useTranslation } from "react-i18next";
 
 type FormTextFieldProps = InputProps & {
   label: string;
@@ -18,6 +19,7 @@ type FormTextFieldProps = InputProps & {
 
 export const FormTextField = forwardRef<HTMLInputElement, FormTextFieldProps>(
   ({ label, helperText, error, optional, id, ...rest }, ref) => {
+    const { t } = useTranslation("common");
     const generatedId = useId();
     const fieldId = id ?? generatedId;
 
@@ -27,7 +29,7 @@ export const FormTextField = forwardRef<HTMLInputElement, FormTextFieldProps>(
           {label}
           {optional ? (
             <Badge ml={2} colorScheme="brand" variant="subtle">
-              Optional
+              {t("form.optional")}
             </Badge>
           ) : null}
         </FormLabel>

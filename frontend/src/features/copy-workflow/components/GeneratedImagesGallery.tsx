@@ -9,6 +9,7 @@ import {
   Text,
   useToast,
 } from "@chakra-ui/react";
+import { useTranslation } from "react-i18next";
 
 import { AppIcon } from "@/components/icons";
 import type { WorkflowImageRecord } from "../types";
@@ -31,6 +32,7 @@ const formatTimestamp = (value: string): string => {
 
 export const GeneratedImagesGallery = ({ images }: GeneratedImagesGalleryProps) => {
   const toast = useToast();
+  const { t } = useTranslation("features");
 
   const handleShare = async (url: string) => {
     const nav = navigator as Navigator & {
@@ -47,8 +49,8 @@ export const GeneratedImagesGallery = ({ images }: GeneratedImagesGalleryProps) 
       }
 
       toast({
-        title: "Link copied",
-        description: "Share the generated image with collaborators.",
+        title: t("copyWorkflow.gallery.shareSuccess.title"),
+        description: t("copyWorkflow.gallery.shareSuccess.description"),
         status: "success",
         duration: 3000,
         isClosable: true,
@@ -56,8 +58,8 @@ export const GeneratedImagesGallery = ({ images }: GeneratedImagesGalleryProps) 
     } catch (error) {
       console.warn("[GeneratedImagesGallery] Share failed", error);
       toast({
-        title: "Share failed",
-        description: "We couldn't copy the image link. Try manually copying it.",
+        title: t("copyWorkflow.gallery.shareError.title"),
+        description: t("copyWorkflow.gallery.shareError.description"),
         status: "error",
         duration: 4000,
         isClosable: true,
@@ -75,7 +77,7 @@ export const GeneratedImagesGallery = ({ images }: GeneratedImagesGalleryProps) 
         textAlign="center"
         color="subtle"
       >
-        <Text>Generated images will land in this gallery once you confirm a copy direction.</Text>
+        <Text>{t("copyWorkflow.gallery.emptyState")}</Text>
       </Box>
     );
   }
@@ -113,14 +115,14 @@ export const GeneratedImagesGallery = ({ images }: GeneratedImagesGalleryProps) 
                 leftIcon={<AppIcon name="download" boxSize={4} />}
                 variant="soft"
               >
-                Download
+                {t("copyWorkflow.gallery.actions.download")}
               </Button>
               <Button
                 leftIcon={<AppIcon name="share" boxSize={4} />}
                 variant="outline"
                 onClick={() => handleShare(item.image.url)}
               >
-                Share
+                {t("copyWorkflow.gallery.actions.share")}
               </Button>
             </ButtonGroup>
           </Stack>

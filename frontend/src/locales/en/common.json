@@ -1,0 +1,46 @@
+{
+  "app": {
+    "name": "Red Studio",
+    "tagline": "Creator workspace"
+  },
+  "navigation": {
+    "dashboard": "Dashboard",
+    "campaigns": "Campaigns",
+    "insights": "Insights",
+    "settings": "Settings"
+  },
+  "aria": {
+    "openNavigation": "Open navigation"
+  },
+  "buttons": {
+    "newBrief": "New brief",
+    "cancel": "Cancel"
+  },
+  "form": {
+    "optional": "Optional",
+    "selectPlaceholder": "Select option",
+    "selectTone": "Select tone"
+  },
+  "labels": {
+    "options_one": "{{count}} option",
+    "options_other": "{{count}} options"
+  },
+  "status": {
+    "active": "Active",
+    "credentialsRequired": "Credentials",
+    "ready": "Ready",
+    "filming": "Filming",
+    "editing": "Editing",
+    "review": "Review"
+  },
+  "toneOptions": {
+    "warm": "Warm & conversational",
+    "minimal": "Minimal & editorial",
+    "playful": "Playful & upbeat",
+    "luxury": "Luxury & polished"
+  },
+  "languages": {
+    "zh-CN": "Simplified Chinese",
+    "en": "English"
+  }
+}

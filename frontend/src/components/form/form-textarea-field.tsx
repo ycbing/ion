@@ -8,6 +8,7 @@ import {
   TextareaProps,
 } from "@chakra-ui/react";
 import { forwardRef, useId } from "react";
+import { useTranslation } from "react-i18next";
 
 type FormTextareaFieldProps = TextareaProps & {
   label: string;
@@ -18,6 +19,7 @@ type FormTextareaFieldProps = TextareaProps & {
 
 export const FormTextareaField = forwardRef<HTMLTextAreaElement, FormTextareaFieldProps>(
   ({ label, helperText, error, optional, id, ...rest }, ref) => {
+    const { t } = useTranslation("common");
     const generatedId = useId();
     const fieldId = id ?? generatedId;
 
@@ -27,7 +29,7 @@ export const FormTextareaField = forwardRef<HTMLTextAreaElement, FormTextareaFie
           {label}
           {optional ? (
             <Badge ml={2} colorScheme="brand" variant="subtle">
-              Optional
+              {t("form.optional")}
             </Badge>
           ) : null}
         </FormLabel>

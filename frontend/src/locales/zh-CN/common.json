@@ -1,0 +1,46 @@
+{
+  "app": {
+    "name": "红工作室",
+    "tagline": "创作者工作台"
+  },
+  "navigation": {
+    "dashboard": "仪表盘",
+    "campaigns": "活动策划",
+    "insights": "数据洞察",
+    "settings": "系统设置"
+  },
+  "aria": {
+    "openNavigation": "打开导航菜单"
+  },
+  "buttons": {
+    "newBrief": "新建简报",
+    "cancel": "取消"
+  },
+  "form": {
+    "optional": "可选",
+    "selectPlaceholder": "请选择",
+    "selectTone": "请选择语调"
+  },
+  "labels": {
+    "options_one": "{{count}} 个选项",
+    "options_other": "{{count}} 个选项"
+  },
+  "status": {
+    "active": "已启用",
+    "credentialsRequired": "需凭证",
+    "ready": "可用",
+    "filming": "拍摄中",
+    "editing": "剪辑中",
+    "review": "审核中"
+  },
+  "toneOptions": {
+    "warm": "温暖友好",
+    "minimal": "极简编辑风",
+    "playful": "轻快活泼",
+    "luxury": "精致奢华"
+  },
+  "languages": {
+    "zh-CN": "简体中文",
+    "en": "English"
+  }
+}

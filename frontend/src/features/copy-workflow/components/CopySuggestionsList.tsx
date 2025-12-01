@@ -13,6 +13,7 @@ import {
   Text,
   Textarea,
 } from "@chakra-ui/react";
+import { useTranslation } from "react-i18next";
 
 import type { CopyGenerationMetadata, CopySuggestion } from "../types";
 
@@ -49,6 +50,8 @@ export const CopySuggestionsList = ({
   onRetry,
   hasRequested = false,
 }: CopySuggestionsListProps) => {
+  const { t } = useTranslation("features");
+
   if (isLoading) {
     return <LoadingState />;
   }
@@ -61,7 +64,7 @@ export const CopySuggestionsList = ({
           <Text>{error}</Text>
           {onRetry ? (
             <Button size="sm" alignSelf="flex-start" variant="outline" onClick={onRetry}>
-              Try again
+              {t("copyWorkflow.actions.retry")}
             </Button>
           ) : null}
         </AlertDescription>
@@ -79,7 +82,7 @@ export const CopySuggestionsList = ({
         textAlign="center"
         color="subtle"
       >
-        <Text>Provide a topic to see tailored copy directions from your active AI provider.</Text>
+        <Text>{t("copyWorkflow.suggestions.emptyPrompt")}</Text>
       </Box>
     );
   }
@@ -89,7 +92,7 @@ export const CopySuggestionsList = ({
       <Alert status="warning" borderRadius="lg">
         <AlertIcon />
         <AlertDescription>
-          No copy variants were returned. Adjust your brief and generate again.
+          {t("copyWorkflow.suggestions.noVariants")}
         </AlertDescription>
       </Alert>
     );
@@ -101,44 +104,52 @@ export const CopySuggestionsList = ({
     <Stack spacing={4}>
       <HStack justify="space-between" align="center">
         <Stack spacing={0}>
-          <Text fontWeight="semibold">AI suggestions</Text>
+          <Text fontWeight="semibold">{t("copyWorkflow.suggestions.title")}</Text>
           <Text fontSize="sm" color="subtle">
-            {providerName ? `Powered by ${providerName}` : "Provider response"}
+            {providerName
+              ? t("copyWorkflow.suggestions.provider", { provider: providerName })
+              : t("copyWorkflow.suggestions.providerFallback")}
           </Text>
         </Stack>
         <Badge colorScheme="brand" variant="subtle">
-          {deliveredVariants} {deliveredVariants === 1 ? "variant" : "variants"}
+          {t("copyWorkflow.suggestions.variantCount", { count: deliveredVariants })}
         </Badge>
       </HStack>
 
       <RadioGroup value={selectedId ?? ""} onChange={(value) => onSelect(value)}>
         <Stack spacing={3}>
-          {copies.map((copy) => (
-            <Box
-              key={copy.id}
-              borderRadius="xl"
-              border="1px solid"
-              borderColor={copy.id === selectedId ? "brand.200" : "ink.100"}
-              bg={copy.id === selectedId ? "brand.50" : "surface"}
-              p={4}
-            >
-              <Stack spacing={3}>
-                <HStack justify="space-between" align="flex-start">
-                  <Radio value={copy.id}>Use this direction</Radio>
-                  <Badge colorScheme={copy.id === selectedId ? "brand" : "gray"} variant="subtle">
-                    {copy.id === selectedId ? "Selected" : "Variant"}
-                  </Badge>
-                </HStack>
-                <Textarea
-                  value={copy.text}
-                  onChange={(event) => onCopyChange(copy.id, event.target.value)}
-                  rows={4}
-                  bg="white"
-                  _dark={{ bg: "gray.800" }}
-                />
-              </Stack>
-            </Box>
-          ))}
+          {copies.map((copy) => {
+            const isActive = copy.id === selectedId;
+
+            return (
+              <Box
+                key={copy.id}
+                borderRadius="xl"
+                border="1px solid"
+                borderColor={isActive ? "brand.200" : "ink.100"}
+                bg={isActive ? "brand.50" : "surface"}
+                p={4}
+              >
+                <Stack spacing={3}>
+                  <HStack justify="space-between" align="flex-start">
+                    <Radio value={copy.id}>{t("copyWorkflow.suggestions.useDirection")}</Radio>
+                    <Badge colorScheme={isActive ? "brand" : "gray"} variant="subtle">
+                      {isActive
+                        ? t("copyWorkflow.suggestions.selected")
+                        : t("copyWorkflow.suggestions.variant")}
+                    </Badge>
+                  </HStack>
+                  <Textarea
+                    value={copy.text}
+                    onChange={(event) => onCopyChange(copy.id, event.target.value)}
+                    rows={4}
+                    bg="white"
+                    _dark={{ bg: "gray.800" }}
+                  />
+                </Stack>
+              </Box>
+            );
+          })}
         </Stack>
       </RadioGroup>
     </Stack>

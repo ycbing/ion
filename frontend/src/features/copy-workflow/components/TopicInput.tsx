@@ -16,28 +16,24 @@ import {
   Textarea,
 } from "@chakra-ui/react";
 import { useMemo, useState } from "react";
+import { useTranslation } from "react-i18next";
 
 import type { CopyGenerationOptions, GenerateCopyPayload } from "../types";
 
-const toneOptions = [
-  { label: "Warm & conversational", value: "warm" },
-  { label: "Minimal & editorial", value: "minimal" },
-  { label: "Playful & upbeat", value: "playful" },
-  { label: "Luxury & polished", value: "luxury" },
+const TONE_OPTION_KEYS = ["warm", "minimal", "playful", "luxury"] as const;
+
+const AUDIENCE_OPTIONS = [
+  { value: "genz-explorers", labelKey: "copyWorkflow.topicForm.audienceOptions.genzExplorers" },
+  { value: "weekend-storytellers", labelKey: "copyWorkflow.topicForm.audienceOptions.weekendStorytellers" },
+  { value: "wellness", labelKey: "copyWorkflow.topicForm.audienceOptions.wellness" },
+  { value: "premium", labelKey: "copyWorkflow.topicForm.audienceOptions.premium" },
 ];
 
-const audienceOptions = [
-  { label: "Gen Z urban explorers", value: "genz-explorers" },
-  { label: "Weekend storytellers", value: "weekend-storytellers" },
-  { label: "Wellness enthusiasts", value: "wellness" },
-  { label: "Premium shoppers", value: "premium" },
-];
-
-const languageOptions = [
-  { label: "English", value: "en" },
-  { label: "简体中文", value: "zh" },
-  { label: "한국어", value: "ko" },
-  { label: "日本語", value: "ja" },
+const LANGUAGE_OPTIONS = [
+  { value: "zh", labelKey: "copyWorkflow.topicForm.languageOptions.zh" },
+  { value: "en", labelKey: "copyWorkflow.topicForm.languageOptions.en" },
+  { value: "ko", labelKey: "copyWorkflow.topicForm.languageOptions.ko" },
+  { value: "ja", labelKey: "copyWorkflow.topicForm.languageOptions.ja" },
 ];
 
 const parseKeywords = (value: string): string[] | undefined => {
@@ -88,23 +84,39 @@ type TopicInputProps = {
 };
 
 export const TopicInput = ({ isLoading = false, onSubmit }: TopicInputProps) => {
+  const { t, i18n } = useTranslation(["features", "common"]);
   const [topic, setTopic] = useState("");
   const [prompt, setPrompt] = useState("");
   const [tone, setTone] = useState("");
   const [audience, setAudience] = useState("");
   const [keywords, setKeywords] = useState("");
-  const [language, setLanguage] = useState("en");
+  const [language, setLanguage] = useState(() => (i18n.language.startsWith("zh") ? "zh" : "en"));
   const [variants, setVariants] = useState(3);
   const [topicError, setTopicError] = useState<string | null>(null);
 
   const variantValue = useMemo(() => Math.min(Math.max(variants, 1), 5), [variants]);
+
+  const toneOptions = useMemo(
+    () => TONE_OPTION_KEYS.map((key) => ({ value: key, label: t(`common:toneOptions.${key}`) })),
+    [t],
+  );
+
+  const audienceOptions = useMemo(
+    () => AUDIENCE_OPTIONS.map((option) => ({ value: option.value, label: t(`features:${option.labelKey}`) })),
+    [t],
+  );
+
+  const languageOptions = useMemo(
+    () => LANGUAGE_OPTIONS.map((option) => ({ value: option.value, label: t(`features:${option.labelKey}`) })),
+    [t],
+  );
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
     const trimmedTopic = topic.trim();
     if (trimmedTopic.length < 3) {
-      setTopicError("Topic must be at least 3 characters long");
+      setTopicError(t("copyWorkflow.topicForm.errors.topicTooShort"));
       return;
     }
 
@@ -124,7 +136,7 @@ export const TopicInput = ({ isLoading = false, onSubmit }: TopicInputProps) => 
     <Box as="form" onSubmit={handleSubmit}>
       <Stack spacing={4}>
         <FormControl isRequired isInvalid={Boolean(topicError)}>
-          <FormLabel htmlFor="topic">Topic</FormLabel>
+          <FormLabel htmlFor="topic">{t("copyWorkflow.topicForm.fields.topic.label")}</FormLabel>
           <Input
             id="topic"
             value={topic}
@@ -134,29 +146,31 @@ export const TopicInput = ({ isLoading = false, onSubmit }: TopicInputProps) => 
                 setTopicError(null);
               }
             }}
-            placeholder="E.g. Sunrise skincare ritual for hikers"
+            placeholder={t("copyWorkflow.topicForm.fields.topic.placeholder")}
           />
-          <FormHelperText>Summarise what you want the AI to ideate around.</FormHelperText>
+          <FormHelperText>{t("copyWorkflow.topicForm.fields.topic.helper")}</FormHelperText>
           <FormErrorMessage>{topicError}</FormErrorMessage>
         </FormControl>
 
         <FormControl>
-          <FormLabel htmlFor="creative-direction">Creative direction</FormLabel>
+          <FormLabel htmlFor="creative-direction">
+            {t("copyWorkflow.topicForm.fields.prompt.label")}
+          </FormLabel>
           <Textarea
             id="creative-direction"
             value={prompt}
             onChange={(event) => setPrompt(event.target.value)}
-            placeholder="Add context, product highlights, or CTA you want included."
+            placeholder={t("copyWorkflow.topicForm.fields.prompt.placeholder")}
             rows={3}
           />
         </FormControl>
 
         <Stack direction={{ base: "column", md: "row" }} spacing={4}>
           <FormControl>
-            <FormLabel htmlFor="tone">Tone</FormLabel>
+            <FormLabel htmlFor="tone">{t("copyWorkflow.topicForm.fields.tone.label")}</FormLabel>
             <Select
               id="tone"
-              placeholder="Select tone"
+              placeholder={t("copyWorkflow.topicForm.fields.tone.placeholder")}
               value={tone}
               onChange={(event) => setTone(event.target.value)}
             >
@@ -169,10 +183,10 @@ export const TopicInput = ({ isLoading = false, onSubmit }: TopicInputProps) => 
           </FormControl>
 
           <FormControl>
-            <FormLabel htmlFor="audience">Audience</FormLabel>
+            <FormLabel htmlFor="audience">{t("copyWorkflow.topicForm.fields.audience.label")}</FormLabel>
             <Select
               id="audience"
-              placeholder="Select audience"
+              placeholder={t("copyWorkflow.topicForm.fields.audience.placeholder")}
               value={audience}
               onChange={(event) => setAudience(event.target.value)}
             >
@@ -187,18 +201,18 @@ export const TopicInput = ({ isLoading = false, onSubmit }: TopicInputProps) => 
 
         <Stack direction={{ base: "column", md: "row" }} spacing={4}>
           <FormControl>
-            <FormLabel htmlFor="keywords">Keywords</FormLabel>
+            <FormLabel htmlFor="keywords">{t("copyWorkflow.topicForm.fields.keywords.label")}</FormLabel>
             <Input
               id="keywords"
               value={keywords}
               onChange={(event) => setKeywords(event.target.value)}
-              placeholder="Separate keywords with commas"
+              placeholder={t("copyWorkflow.topicForm.fields.keywords.placeholder")}
             />
-            <FormHelperText>Optional emphasis terms (max 12).</FormHelperText>
+            <FormHelperText>{t("copyWorkflow.topicForm.fields.keywords.helper")}</FormHelperText>
           </FormControl>
 
           <FormControl>
-            <FormLabel htmlFor="language">Language</FormLabel>
+            <FormLabel htmlFor="language">{t("copyWorkflow.topicForm.fields.language.label")}</FormLabel>
             <Select
               id="language"
               value={language}
@@ -213,7 +227,7 @@ export const TopicInput = ({ isLoading = false, onSubmit }: TopicInputProps) => 
           </FormControl>
 
           <FormControl>
-            <FormLabel htmlFor="variants">Variants</FormLabel>
+            <FormLabel htmlFor="variants">{t("copyWorkflow.topicForm.fields.variants.label")}</FormLabel>
             <NumberInput
               min={1}
               max={5}
@@ -237,7 +251,7 @@ export const TopicInput = ({ isLoading = false, onSubmit }: TopicInputProps) => 
 
         <Stack direction={{ base: "column", md: "row" }} spacing={3} justify="flex-end">
           <Button type="submit" variant="primary" isLoading={isLoading} alignSelf="flex-end">
-            Generate copy ideas
+            {t("copyWorkflow.topicForm.actions.generate")}
           </Button>
         </Stack>
       </Stack>
